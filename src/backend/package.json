@@ -1,5 +1,5 @@
 {
-  "name": "eventplaner",
+  "name": "backend",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -10,19 +10,17 @@
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "ejs": "~2.6.1",
-    "express": "^4.16.4",
+    "express": "~4.16.1",
     "gulp": "^4.0.2",
     "http-errors": "~1.6.3",
     "mongoose": "^5.10.14",
     "morgan": "~1.9.1",
     "nodejs": "^0.0.0",
     "path": "^0.12.7",
-    "pg": "^8.5.0",
-    "socket.io": "^3.0.1"
+    "pg": "^8.5.1"
   },
   "devDependencies": {
     "eslint": "^7.13.0",
-    "jsdoc": "^3.6.6",
-    "nodemon": "^2.0.6"
+    "jsdoc": "^3.6.6"
   }
 }
