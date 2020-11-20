@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
+    "gulp-eslint": "^6.0.0",
+    "gulp-exec": "^5.0.0",
+    "gulp-if": "^3.0.0",
+    "gulp-install": "^1.1.0"
+  }
+}
