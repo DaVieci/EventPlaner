@@ -34,8 +34,8 @@ app.use('/users', usersRouter);
 // mongoose and mongo sandbox routes
 app.get('/add-event', (req, res) => {
   const event = new Event({
-    title: 'new Event',
-    body: 'ibisefhesofjifheofb',
+    title: 'another Event',
+    body: 'yay',
     date: Date()
   });
 
@@ -43,7 +43,14 @@ app.get('/add-event', (req, res) => {
     .then(result => {
       res.send(result);
     }).catch(err => console.log(err))
-})
+});
+
+app.get('/all-events', (req, res) => {
+  Event.find()
+    .then(result => {
+      res.send(result);
+    }).catch(err => console.log(err));
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
