@@ -1,24 +1,31 @@
-var MongoClient = require('mongodb').MongoClient;
+const MongoClient = require('mongodb').MongoClient;
+const url = 'mongodb://localhost:27017';
+var db;
 
-//Insert Document
-var insertDocument = function(db, callback){
-    var collection = db.collection('events');
+const testDocument = ({
+    title: 'Sleep',
+    body: 'pls goto sleep',
+    date: Date(),
+    user: {
+        name: 'Viet'
+    }
+})
 
-    collection.insert({ title: 'Party', date: Date()});
-
-    db.collection('events').count(function (err, count) {
-        if (err) throw err;
-        
-        console.log('Total Rows: ' + count);
-    });
+function insertOneDoc(client, collection, data) {
+    collection.insertOne(data);
+    client.close();
 }
 
 // Connect to the db
-MongoClient.connect("mongodb://localhost:27017/eventplanner", function(err, db){
-    if (err) throw err;
-    console.log("it is working");
-    db.close();
-    //insertDocument(client.db('eventplanner'), function() {
-      //  db.close();
-    //});
+MongoClient.connect(url).then(client => {
+    db = client.db('eventplanner'); //select DB
+    console.log('DB selected');
+    const collection = db.collection('events'); //select collection
+    console.log('collection selected');
+    return insertOneDoc(client, collection, testDocument);
+}).then(response => {
+    console.log('New document inserted: \n', testDocument);
 })
+.catch(error => {
+    console.log(error);
+});
