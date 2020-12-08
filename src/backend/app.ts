@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 const mongoose = require('mongoose');
-const Event = require('./models/events.ts');
+const Events = require('./models/events.ts');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -33,7 +33,7 @@ app.use('/users', usersRouter);
 
 // mongoose and mongo sandbox routes
 app.get('/add-event', (req, res) => {
-  const event = new Event({
+  const event = new Events({
     title: 'another Event',
     body: 'yay',
     date: Date()
@@ -46,7 +46,7 @@ app.get('/add-event', (req, res) => {
 });
 
 app.get('/all-events', (req, res) => {
-  Event.find()
+  Events.find()
     .then(result => {
       res.send(result);
     }).catch(err => console.log(err));
