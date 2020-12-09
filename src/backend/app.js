@@ -5,7 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 const mongoose = require('mongoose');
-const Events = require('./models/events.js');
+const Event = require('./models/events.js');
+const User = require('./models/users.js');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -13,7 +14,10 @@ var usersRouter = require('./routes/users');
 var app = express();
 
 // connect to mongodb
-const dbURI = 'mongodb://localhost:27017/eventplanner';
+const mongopw = 'MAC@nuf0peal-thon';
+const mongoURI = 'mongodb+srv://bela_and_viet:' + mongopw + '@cluster0.tiroe.mongodb.net/eventplanner?retryWrites=true&w=majority';
+//const dbURI = 'mongodb://localhost:27017/eventplanner';
+const dbURI = mongoURI;
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(result => console.log('Connected to mongodb'))
     .catch(err => console.log(err));
@@ -32,9 +36,22 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 // mongoose and mongo sandbox routes
+app.get('/add-user', (req, res) => {
+  const user = new User({
+    name: 'Bela Föhrenbacher',
+    mail: 'inf19017@lehre.dhbw-stuttgart.de',
+    password: '123456789'
+  });
+
+  user.save()
+    .then(result => {
+      res.send(result);
+    }).catch(err => console.log(err))
+});
+
 app.get('/add-event', (req, res) => {
-  const event = new Events({
-    title: 'another Event',
+  const event = new Event({
+    title: '...',
     body: 'yay',
     date: Date()
   });
