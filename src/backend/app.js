@@ -38,9 +38,9 @@ app.use('/users', usersRouter);
 // mongoose and mongo sandbox routes
 app.get('/add-user', (req, res) => {
   const user = new User({
-    name: 'Bela Föhrenbacher',
-    mail: 'inf19017@lehre.dhbw-stuttgart.de',
-    password: '123456789'
+    name: 'Viet Dang',
+    mail: 'inf19155@lehre.dhbw-stuttgart.de',
+    password: '987654321'
   });
 
   user.save()
@@ -51,9 +51,13 @@ app.get('/add-user', (req, res) => {
 
 app.get('/add-event', (req, res) => {
   const event = new Event({
-    title: '...',
-    body: 'yay',
-    date: Date()
+    title: 'Testevent',
+    start: '20-12-2020',
+    end: '20-12-2020',
+    body: 'Das ist nur ein Testevent um die Struktur zu testen',
+    user: {
+      _id: '5fd0cb44d70ca3d0922ea950'
+    }
   });
 
   event.save()

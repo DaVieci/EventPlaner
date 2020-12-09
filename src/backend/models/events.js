@@ -6,12 +6,27 @@ const eventSchema = new Schema({
         type: String,
         required: true
     },
+    start: {
+        type: String,
+        required: true
+    },
+    end: {
+        type: String,
+        required: true
+    },
     body: {
         type: String,
         required: false
     },
-    date: {
-        type: Date,
+    image: {
+        reqired: false
+    },
+    category: {
+        type: Object,
+        required: false
+    },
+    user: {
+        type: Object,
         required: true
     }
 }, { timestamps: true })
