@@ -15,9 +15,8 @@ var app = express();
 
 // connect to mongodb
 const mongopw = 'MAC@nuf0peal-thon';
-const mongoURI = 'mongodb+srv://bela_and_viet:' + mongopw + '@cluster0.tiroe.mongodb.net/eventplanner?retryWrites=true&w=majority';
-//const dbURI = 'mongodb://localhost:27017/eventplanner';
-const dbURI = mongoURI;
+const dbURI = 'mongodb+srv://bela_and_viet:' + mongopw + '@cluster0.tiroe.mongodb.net/eventplanner?retryWrites=true&w=majority';
+
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(result => console.log('Connected to mongodb'))
     .catch(err => console.log(err));
