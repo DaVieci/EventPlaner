@@ -4,15 +4,12 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { LoginComponent } from './login/login.component';
 import { ErrorComponent } from './error/error.component';
-import { SignupComponent } from './signup/signup.component';
 import { HeaderComponent } from './header/header.component';
-import { EventsComponent } from './events/events.component';
 
 import { AppRoutingModule } from './app-routing.module';
 
-import { AuthGuard } from './auth-guard.service';
+import { AuthGuard } from './services/auth-guard.service';
 
 import { NbThemeModule } from '@nebular/theme';
 import { 
@@ -37,10 +34,7 @@ import { NbPasswordAuthStrategy, NbAuthModule, NbAuthJWTToken } from '@nebular/a
     AppComponent,
     NavbarComponent,
     ErrorComponent,
-    LoginComponent,
-    SignupComponent,
-    HeaderComponent,
-    EventsComponent
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -66,21 +60,21 @@ import { NbPasswordAuthStrategy, NbAuthModule, NbAuthJWTToken } from '@nebular/a
             class: NbAuthJWTToken,
             key: 'token'  // this parameter tells where to look for the token
           },
-          baseEndpoint: 'http://localhost:3000/',   // here goes our backend!
+          baseEndpoint: '',   // here goes usually our backend, but we already have defined it in the proxy.conf.json
           login: {
-            endpoint: 'user/login',
-            method: 'post',
+            endpoint: '/api/users',
+            method: 'get',
             redirect: {
               success: '/events',
               failure: null,  // stay on the same page
             }
           },
           register: {
-            endpoint: 'user/register',
+            endpoint: '/api/users',
             method: 'post',
           },
           logout: {
-            endpoint: 'user/logout',
+            endpoint: '/api/logout',
             method: 'post',
           },
           requestPass: {

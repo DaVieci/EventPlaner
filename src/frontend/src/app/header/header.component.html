@@ -1,5 +1,16 @@
 <nb-layout-header fixed>
-    <nb-icon (click)="toggleSidebar()" class="sidebar-toggle" icon="menu-2-outline"></nb-icon>
-    <h2>{{title}}</h2>
+    <nb-icon *ngIf="user_loggedIn" (click)="toggleSidebar()" class="sidebar-toggle" icon="menu-2-outline"></nb-icon>
+    <h2 *ngIf="!user_loggedIn">{{title}}</h2>
+      
+    <nb-user
+        *ngIf="user_loggedIn"
+        shape="semi-round"
+        size="medium"
+        name="Viet Foehre"
+        title="inf19155@lehre.dhbw-stuttgart.de"
+        picture="https://via.placeholder.com/50/4479e7/ffffff?Text=IMG"
+        color="#cccccc"
+        style="margin-left: auto; margin-right: 0;">
+    </nb-user> <!-- bei picture könnten wir es uns evtl. einfacher machen, wenn der User nur irgend ein Bild-URL von anderen Seiten angibt -->
     <!-- <nb-user [name]="user?.name" [picture]="user?.picture"></nb-user> -->
 </nb-layout-header>

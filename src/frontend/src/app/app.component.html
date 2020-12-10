@@ -3,7 +3,7 @@
     <app-header></app-header>
   </nb-layout-header>
   
-  <nb-sidebar class="menu-sidebar" responsive start>
+  <nb-sidebar *ngIf="user_loggedIn" class="menu-sidebar" responsive start>
     <app-navbar></app-navbar>
   </nb-sidebar>
 

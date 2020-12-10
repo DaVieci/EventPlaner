@@ -2,10 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router'
 
 import { ErrorComponent } from './error/error.component';
-import { LoginComponent } from './login/login.component';
-import { SignupComponent } from './signup/signup.component';
+import { LoginComponent } from './auth/login.component';
+import { SignupComponent } from './auth/signup.component';
+import { EventsComponent } from './dashboard/events.component';
 
-import { AuthGuard } from './auth-guard.service';
+import { AuthGuard } from './services/auth-guard.service';
 
 import {
   NbAuthComponent,
@@ -15,12 +16,16 @@ import {
   NbRequestPasswordComponent,
   NbResetPasswordComponent,
 } from '@nebular/auth';
-import { EventsComponent } from './events/events.component';
 
+const dashboardModule = () => import('./dashboard/dashboard.module').then(x => x.DashboardModule);
+const authModule = () => import('./auth/auth.module').then(x => x.AuthModule);
 
 const routes: Routes = [
-  { path: '', redirectTo: '/auth/login', pathMatch: 'full' },
-  { path: 'auth',
+  { path: '', redirectTo: '/events', pathMatch: 'full' },
+  { path: 'events', loadChildren: dashboardModule, canActivate: [AuthGuard] },
+  { path: 'auth', loadChildren: authModule },
+  { path: '**', component: ErrorComponent }
+  /*{ path: 'auth',
     component: NbAuthComponent,
     children: [
       {
@@ -49,9 +54,7 @@ const routes: Routes = [
         component: NbResetPasswordComponent,
       }
     ]
-  },
-  { path: 'events', component: EventsComponent, canActivate: [AuthGuard] },
-  { path: '**', component: ErrorComponent }
+  },*/
 ]
 
 @NgModule({
