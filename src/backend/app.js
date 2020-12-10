@@ -80,10 +80,8 @@ app.post('/events', (req, res) => {
   event.save()
     .then(result => {
       console.log('saved to DB');
-      res.send(result);
-    }).catch(err => {
-      console.log(err);
-    });
+      res.redirect('/events');
+    }).catch(err => console.log(err));
 });
 
 app.get('/events/:id', (req, res) => {
@@ -91,19 +89,15 @@ app.get('/events/:id', (req, res) => {
   Event.findById(id)
     .then(result => {
       res.send(result);
-    }).catch(err => {
-      console.log(err);
-    });
+    }).catch(err => console.log(err));
 });
 
 app.delete('/events/:id', (req, res) => {
   const id = req.params.id;
   Event.findByIdAndDelete(id)
     .then(result => {
-      res.send(result);
-    }).catch(err => {
-      console.log(err);
-    });
+      res.redirect('/events');
+    }).catch(err => console.log(err));
 });
 
 // catch 404 and forward to error handler
