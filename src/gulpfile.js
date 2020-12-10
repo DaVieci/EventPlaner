@@ -64,7 +64,7 @@ gulp.task('runBackend', () => {
 gulp.task('runFrontend', () => {
     console.log("Starting Frontend at localhost:4200")
     return gulp.src('.', {read: false})
-    .pipe(exec('cd ./Frontend && ng serve --open=true'))
+    .pipe(exec('cd ./frontend && ng serve --proxy-config ./proxy.conf.json'))
     .pipe(exec.reporter());
     })
 
