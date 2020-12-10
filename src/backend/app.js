@@ -6,11 +6,9 @@ var logger = require('morgan');
 
 const mongoose = require('mongoose');
 
-const Event = require('./models/events.js');
-const User = require('./models/users.js');
-
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var eventRoutes = require('./routes/eventRoutes');
+var userRoutes = require('./routes/userRoutes');
 
 var app = express();
 
@@ -34,75 +32,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 // user routes
-app.get('/users', (req, res) => {
-  User.find()
-    .then(result => {
-      res.send(result);
-    }).catch(err => console.log(err));
-});
-
-app.post('/users', (req, res) => {
-  const user = new User(req.body);
-
-  user.save()
-    .then(result => {
-      console.log('user created');
-      res.send(result);
-    }).catch(err => console.log(err));
-});
-
-app.get('/users/:id', (req, res) => {
-  const id = req.params.id;
-  User.findById(id)
-    .then(result => {
-      res.send(result);
-    }).catch(err => console.log(err));
-});
-
-app.delete('/users/:id', (req, res) => {
-  const id = req.params.id;
-  User.findByIdAndDelete(id)
-    .then(result => {
-      res.send(result);
-    }).catch(err => console.log(err));
-});
+app.use(userRoutes);
 
 // event routes
-app.get('/events', (req, res) => {
-  Event.find()
-    .then(result => {
-      res.send(result);
-    }).catch(err => console.log(err));
-});
-
-app.post('/events', (req, res) => {
-  const event = new Event(req.body);
-
-  event.save()
-    .then(result => {
-      console.log('saved to DB');
-      res.redirect('/events');
-    }).catch(err => console.log(err));
-});
-
-app.get('/events/:id', (req, res) => {
-  const id = req.params.id;
-  Event.findById(id)
-    .then(result => {
-      res.send(result);
-    }).catch(err => console.log(err));
-});
-
-app.delete('/events/:id', (req, res) => {
-  const id = req.params.id;
-  Event.findByIdAndDelete(id)
-    .then(result => {
-      res.redirect('/events');
-    }).catch(err => console.log(err));
-});
+app.use(eventRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
