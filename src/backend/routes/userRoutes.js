@@ -16,7 +16,7 @@ router.get('/users', (req, res) => {
 });
 
 //create new user
-router.post('/users/create', async (req, res) => {
+router.post('/users/sign-up', async (req, res) => {
 
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -28,7 +28,11 @@ router.post('/users/create', async (req, res) => {
     user.save()
       .then(result => {
         console.log('user created');
-        res.send(result);
+        const username = req.body.email;
+        const user = {email: username};
+
+        const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+        res.send({token: accessToken});
       }).catch(err => console.log(err));
   } catch {res.status(500).send()}
 
@@ -50,8 +54,6 @@ router.post('/users/login', async (req, res) => {
 
       const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
       res.send({token: accessToken});
-
-      res.staus(200).send('success');
     } else {
       res.send('not allowed');
     }

@@ -6,11 +6,10 @@
         *ngIf="user_loggedIn"
         shape="semi-round"
         size="medium"
-        name="Viet Foehre"
-        title="inf19155@lehre.dhbw-stuttgart.de"
-        picture="https://via.placeholder.com/50/4479e7/ffffff?Text=IMG"
+        [name]="user?.fullName"
+        [title]="user?.email"
         color="#cccccc"
         style="margin-left: auto; margin-right: 0;">
-    </nb-user> <!-- bei picture könnten wir es uns evtl. einfacher machen, wenn der User nur irgend ein Bild-URL von anderen Seiten angibt -->
+    </nb-user>
     <!-- <nb-user [name]="user?.name" [picture]="user?.picture"></nb-user> -->
 </nb-layout-header>
