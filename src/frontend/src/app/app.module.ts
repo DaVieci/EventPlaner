@@ -70,11 +70,15 @@ import { NbPasswordAuthStrategy, NbAuthModule, NbAuthJWTToken } from '@nebular/a
             }
           },
           register: {
-            endpoint: '/api/users/create',
+            endpoint: '/api/users/sign-up',
             method: 'post',
+            redirect: {
+              success: '/',
+              failure: null,  // stay on the same page
+            }
           },
           logout: {
-            endpoint: '/api/logout',
+            endpoint: '/api/users/logout',
             method: 'post',
           },
           requestPass: {

@@ -1,10 +1,11 @@
 const express = require('express');
 const Event = require('../models/events.js');
+const authenticateToken = require('../middleware/auth');
 
 const router = express.Router();
 
-router.get('/events', (req, res) => {
-    Event.find()
+router.get('/events', authenticateToken, (req, res) => {
+    Event.find({email: user})
       .then(result => {
         res.send(result);
       }).catch(err => console.log(err));
