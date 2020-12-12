@@ -41,6 +41,11 @@ export class NavbarComponent implements OnInit {
           link: '/events'
         },
       ]
+    },
+    {
+      title: 'Logout',
+      icon: 'log-out-outline',
+      link: '/auth/logout',
     }
   ];
 

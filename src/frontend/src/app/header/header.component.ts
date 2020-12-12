@@ -10,7 +10,7 @@ import { NbSidebarService } from '@nebular/theme';
 })
 export class HeaderComponent implements OnInit {
   title = "EventPlanner";
-  user = {};
+  user = {email: String, fullName: String};
   user_loggedIn: boolean;
 
   constructor(
