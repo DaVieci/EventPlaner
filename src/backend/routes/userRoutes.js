@@ -1,5 +1,8 @@
+require('dotenv').config();
+
 const express = require('express');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require('../models/users.js');
 
 const router = express.Router();
@@ -41,7 +44,14 @@ router.post('/users/login', async (req, res) => {
 
   try {
     if (await bcrypt.compare(req.body.password, user.password)) {
-      res.send('success');
+
+      const username = req.body.email;
+      const user = {email: username};
+
+      const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+      res.send({token: accessToken});
+
+      res.staus(200).send('success');
     } else {
       res.send('not allowed');
     }
