@@ -5,7 +5,7 @@ const authenticateToken = require('../middleware/auth');
 const router = express.Router();
 
 router.get('/events', authenticateToken, (req, res) => {
-    Event.find({email: user})
+    Event.find({user: user})
       .then(result => {
         res.send(result);
       }).catch(err => console.log(err));
