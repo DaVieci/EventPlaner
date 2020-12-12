@@ -28,8 +28,9 @@ router.post('/users/sign-up', async (req, res) => {
     user.save()
       .then(result => {
         console.log('user created');
-        const username = req.body.email;
-        const user = {email: username};
+        const email = req.body.email;
+        const fullName = req.body.fullName;
+        const user = {email: email, fullName: fullName};
 
         const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '7200s'});
         res.send({token: accessToken});
@@ -49,8 +50,9 @@ router.post('/users/login', async (req, res) => {
   try {
     if (await bcrypt.compare(req.body.password, user.password)) {
 
-      const username = req.body.email;
-      const user = {email: username};
+      const email = req.body.email;
+      const fullName = req.body.fullName;
+      const user = {email: email, fullName: fullName};
 
       const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '7200s'});
       res.send({token: accessToken});
