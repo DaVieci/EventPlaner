@@ -1,5 +1,6 @@
 const express = require('express');
 const Event = require('../models/events.js');
+const authenticateToken = require('../middleware/auth');
 
 const router = express.Router();
 

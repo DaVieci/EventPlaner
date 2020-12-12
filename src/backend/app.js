@@ -5,14 +5,11 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
 
 var indexRouter = require('./routes/index');
 var eventRoutes = require('./routes/eventRoutes');
 var userRoutes = require('./routes/userRoutes');
 var categoryRoutes = require('./routes/categoryRoutes');
-const { JsonWebTokenError } = require('jsonwebtoken');
 
 var app = express();
 
@@ -35,20 +32,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-
-function authenticateToken(req, res, next) {
-  const authHeader = req.header['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-
-  if(token == null) return res.status(401).send('you dont have access');
-
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-    if (err) return res.staus(403).send('token not valid');
-
-    req.user = user;
-    next();
-  })
-}
 
 // user routes
 app.use(userRoutes);
