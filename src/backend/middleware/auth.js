@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-let userEmail;
 
 function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization'];
@@ -11,10 +10,10 @@ function authenticateToken(req, res, next) {
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
       if (err) return res.status(403).send('token not valid');
 
-      userEmail = user;
+      const userEmail = user;
+      module.exports = userEmail;
+
       next();
     })
-  }
-  
-  module.exports = userEmail;
-  module.exports = authenticateToken;
+} 
+module.exports = authenticateToken;

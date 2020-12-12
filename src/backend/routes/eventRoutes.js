@@ -1,7 +1,7 @@
 const express = require('express');
 const Event = require('../models/events.js');
 const authenticateToken = require('../middleware/auth');
-const userEmail = require('../middleware/auth');
+const userEmail = 'fick doch diese scheisse hier!!!';
 
 const router = express.Router();
 
