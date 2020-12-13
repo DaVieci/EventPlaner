@@ -9,11 +9,10 @@ function authenticateToken(req, res, next) {
   
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
       if (err) return res.status(403).send('token not valid');
-
-      const userEmail = user;
-      module.exports = userEmail;
+      res.body = user;
 
       next();
     })
 } 
+
 module.exports = authenticateToken;
