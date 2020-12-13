@@ -5,7 +5,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login.component';
 import { SignupComponent } from './signup.component';
 
-import { NbAuthComponent } from '@nebular/auth';
+import { NbAuthComponent, NbLogoutComponent } from '@nebular/auth';
+
+import { AuthGuard } from './../services/auth-guard.service';
 
 
 const routes: Routes = [
@@ -13,7 +15,8 @@ const routes: Routes = [
       path: '', component: NbAuthComponent,
       children: [
           { path: 'login', component: LoginComponent },
-          { path: 'signup', component: SignupComponent }
+          { path: 'signup', component: SignupComponent },
+          { path: 'logout', component: NbLogoutComponent, canActivate: [AuthGuard] }
       ]
   }
 ];

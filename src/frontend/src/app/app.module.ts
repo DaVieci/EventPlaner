@@ -62,19 +62,23 @@ import { NbPasswordAuthStrategy, NbAuthModule, NbAuthJWTToken } from '@nebular/a
           },
           baseEndpoint: '',   // here goes usually our backend, but we already have defined it in the proxy.conf.json
           login: {
-            endpoint: '/api/users',
-            method: 'get',
+            endpoint: '/api/users/login',
+            method: 'post',
             redirect: {
               success: '/events',
               failure: null,  // stay on the same page
             }
           },
           register: {
-            endpoint: '/api/users',
+            endpoint: '/api/users/sign-up',
             method: 'post',
+            redirect: {
+              success: '/',
+              failure: null,  // stay on the same page
+            }
           },
           logout: {
-            endpoint: '/api/logout',
+            endpoint: '/api/users/logout',
             method: 'post',
           },
           requestPass: {
