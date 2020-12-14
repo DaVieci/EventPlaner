@@ -79,11 +79,7 @@ import { NbPasswordAuthStrategy, NbAuthModule, NbAuthJWTToken } from '@nebular/a
           },
           logout: {
             endpoint: '/api/users/logout',
-            method: 'post',
-            redirect: {
-              success: '/',
-              failure: null,  // stay on the same page
-            }
+            method: 'post'
           },
           requestPass: {
             endpoint: '/auth/request-pass',
