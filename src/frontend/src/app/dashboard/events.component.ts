@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { NbAuthJWTToken, NbAuthService } from '@nebular/auth';
 
@@ -24,7 +23,6 @@ export class EventsComponent implements OnInit {
 
   constructor(
     private authService: NbAuthService,
-    private http: HttpClient
   ) {
     this.authService.onTokenChange()
         .subscribe((token: NbAuthJWTToken) => {
