@@ -118,6 +118,16 @@ export class EventsComponent implements OnInit {
   }
 
   delete_event(event_id: String) {
+    var requestOptions = {
+      method: 'DELETE',
+      headers: {
+        Authorization: this.bearer_token
+      }
+    };
 
+    fetch("/api/events/" + event_id, requestOptions)
+      .then(result => {
+        console.log(result);
+      }).catch(err => console.log(err));
   }
 }

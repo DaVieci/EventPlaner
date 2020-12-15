@@ -29,7 +29,7 @@ router.get('/events/:id', (req, res) => {
       }).catch(err => console.log(err));
 });
   
-router.delete('/events/:id', (req, res) => {
+router.delete('/events/:id', authenticateToken, (req, res) => {
     const id = req.params.id;
     Event.findByIdAndDelete(id)
       .then(result => {
