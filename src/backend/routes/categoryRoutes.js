@@ -10,4 +10,17 @@ router.get('/categories', (req, res) => {
         }).catch(err => console.log(err))
 });
 
+router.post('/categories', (req, res) => {
+    if (Category.find({catType: req.body.type})) {
+        res.send('Category already exists')
+    }
+
+    const category = new Category(req.body);
+
+    category.save()
+      .then(result => {
+        console.log('New category created');
+      }).catch(err => console.log(err));
+})
+
 module.exports = router;

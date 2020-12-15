@@ -28,6 +28,10 @@ const eventSchema = new Schema({
     user: {
         type: String,
         required: true
+    },
+    status: {
+        type: String,
+        required: false
     }
 }, { timestamps: true })
 

@@ -17,7 +17,7 @@ router.post('/events', authenticateToken, (req, res) => {
     event.save()
       .then(result => {
         console.log('saved to DB');
-        res.redirect('/events');
+        //res.redirect('/events');
       }).catch(err => console.log(err));
 });
   
