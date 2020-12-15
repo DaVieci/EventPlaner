@@ -125,7 +125,7 @@ export class EventsComponent implements OnInit {
       }
     };
 
-    fetch("/api/events/" + event_id, requestOptions)
+    fetch(`/api/events/${event_id}`, requestOptions)
       .then(result => {
         console.log(result);
       }).catch(err => console.log(err));

@@ -87,11 +87,11 @@ Ende Dummy -->
                                 Status: {{ event.status }}
                         </nb-card-body>
                         <nb-card-footer>
-                                <button nbButton shape="semi-round" (click)="edit_event(event.id)">
+                                <button nbButton shape="semi-round" (click)="edit_event(event._id)">
                                         <nb-icon icon="edit-2-outline"></nb-icon>
                                         Edit
                                 </button>
-                                <button nbButton shape="semi-round" (click)="delete_event(event.id)">
+                                <button nbButton shape="semi-round" (click)="delete_event(event._id)" >
                                         <nb-icon icon="trash-2-outline"></nb-icon>
                                         Delete
                                 </button>
