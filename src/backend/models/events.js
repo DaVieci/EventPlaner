@@ -19,10 +19,11 @@ const eventSchema = new Schema({
         required: false
     },
     image: {
-        reqired: false
+        type: Base64,
+        required: false
     },
     category: {
-        type: Object,
+        type: String,
         required: false
     },
     user: {
