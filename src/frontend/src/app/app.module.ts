@@ -11,7 +11,10 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AuthGuard } from './services/auth-guard.service';
 
-import { NbThemeModule } from '@nebular/theme';
+import { 
+  NbDatepickerModule,
+  NbThemeModule
+} from '@nebular/theme';
 import { 
   NbSidebarModule,
   NbMenuModule,
@@ -52,6 +55,7 @@ import { NbPasswordAuthStrategy, NbAuthModule, NbAuthJWTToken } from '@nebular/a
     NbUserModule,
     NbEvaIconsModule,
     HttpClientModule,
+    NbDatepickerModule.forRoot(),
     NbAuthModule.forRoot({
       strategies: [
         NbPasswordAuthStrategy.setup({

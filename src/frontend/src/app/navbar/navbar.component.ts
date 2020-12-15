@@ -17,29 +17,12 @@ export class NavbarComponent implements OnInit {
     {
       title: 'Home',
       icon: 'home-outline',
-      link: '/'
+      link: '/events'
     },
     {
-      title: 'Events',
-      icon: 'book-outline',
-      link: '/events',
-      children: [
-        {
-          title: 'Dashboard',
-          icon: 'calendar-outline',
-          link: '/events'
-        },
-        {
-          title: 'History',
-          icon: 'archive-outline',
-          link: '/events/history'
-        },
-        {
-          title: 'Create',
-          icon: 'plus-square-outline',
-          link: '/events/add'
-        },
-      ]
+      title: 'Create Event',
+      icon: 'plus-square-outline',
+      link: '/events/add'
     },
     {
       title: 'About',
