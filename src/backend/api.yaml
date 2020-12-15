@@ -1,0 +1,42 @@
+openapi: 3.0.0
+info:
+  description: 'This is the documentation for our API Backend of the Event Planner'
+  version: '1.0.0'
+  title: 'API for Event Planner'
+
+tags:
+  - name: 'user'
+    description: 'Sign-up or login as user'
+  - name: 'event'
+    description: 'Show, create or delete events'
+  - name: 'category'
+    description: 'Add existing categories to events or create new'
+
+paths:
+  '/user/sign-up':
+    post:
+      tags:
+        - 'user'
+
+      summary: 'Creates a new User Object in DB an returns token'
+      requestBody:
+        content:
+          application/json:
+          shema:
+            $ref: './models/users'
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad data input'
+        401:
+          description: 'Token not valid'
+        500:
+          description: 'Something went wrong'
+
+  '/user/login':
+    post:
+      tags:
+        - 'user'
+
+      summary: 'Login as a user an get a token for a 2hr session'
