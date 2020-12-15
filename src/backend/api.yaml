@@ -7,7 +7,7 @@ info:
 tags:
   - name: 'user'
     description: 'Sign-up or login as user'
-  - name: 'event'
+  - name: 'events'
     description: 'Show, create or delete events'
   - name: 'category'
     description: 'Add existing categories to events or create new'
@@ -40,3 +40,124 @@ paths:
         - 'user'
 
       summary: 'Login as a user an get a token for a 2hr session'
+      requestBody:
+        content:
+          application/json:
+          shema:
+            $ref: './models/users'
+      parameters:
+        - email: userEmail
+          in: body
+          description: user email
+          required: true
+          schema:
+            type: String
+        - password: userPassword
+          in: body
+          description: user password
+          required: true
+          schema:
+            type: String
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad data input'
+        401:
+          description: 'Token not valid'
+        500:
+          description: 'Something went wrong'
+
+  '/events':
+    get:
+      tags: 
+        - 'events'
+      
+      summary: 'get specific events of a user, based on user email'
+      parameters:
+        - in: header
+          name: authorization
+          schema:
+            type: Bearer Token
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad data input'
+        401:
+          description: 'Token not valid'
+        500:
+          description: 'Something went wrong'
+
+    post:
+      tags:
+        - 'events'
+
+      summary: 'create events as a valid user'
+      requestBody:
+        content:
+          application/json:
+          shema:
+            $ref: './models/events'
+      parameters:
+        - title: eventTitle
+          in: body
+          description: event title
+          required: true
+          schema:
+            type: String
+        - start: startDateTime
+          in: body
+          description: start date and time of event
+          required: true
+          schema:
+            type: String
+        - end: endDateTime
+          in: body
+          description: end date and time of event
+          required: true
+          schema:
+            type: String
+        - body: eventDescription
+          in: body
+          description: detailed description of event
+          required: false
+          schema:
+            type: String
+        - image: base64Image
+          in: body
+          description: base64 image for orientation
+          required: false
+          schema:
+            type: String
+        - category: eventCategory
+          in: body
+          description: category of event for filter
+          required: false
+          schema:
+            type: String
+        - user: userEmail
+          in: body
+          description: owner of the event
+          required: true
+          schema:
+            type: String
+        - status: planningStatus
+          in: body
+          description: planning status of event
+          required: false
+          schema:
+            type: String
+        - in: header
+          name: authorization
+          schema:
+            type: Bearer Token
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad data input'
+        401:
+          description: 'Token not valid'
+        500:
+          description: 'Something went wrong'
