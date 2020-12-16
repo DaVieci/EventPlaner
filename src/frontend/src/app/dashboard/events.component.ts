@@ -19,12 +19,14 @@ export class EventsComponent implements OnInit {
   events: {
     _id: String,
     title: String,
-    start: Date,
-    end: Date,
+    start_date: String,
+    start_time: String,
+    end_date: String,
+    end_time: String,
     body: String,
-    user: String,
-    picture: String,
+    image: String,
     category: String,
+    user: String,
     status: String
   };
 

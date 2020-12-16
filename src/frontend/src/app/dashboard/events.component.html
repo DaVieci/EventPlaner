@@ -50,7 +50,7 @@ Ende Tabelle -->
 </div>
 Ende Dummy -->
 
-<div class='date_picker'></div>
+<div class='date_picker'>
 <input nbInput class="date_input" shape="semi-round" placeholder="Pick Date Range" [nbDatepicker]="dateTimePicker">
 <nb-rangepicker #dateTimePicker></nb-rangepicker>
 
@@ -62,7 +62,7 @@ Ende Dummy -->
         <nb-icon icon="funnel-outline"></nb-icon>
         Filter
 </button>
-
+</div>
 
 <br><br><br><br>
 
@@ -74,15 +74,17 @@ Ende Dummy -->
                         <nb-card-body>
                                 <img src="./../../assets/event_pics/festival1.jpg" alt="1" class="event_pic">
                         </nb-card-body>
-                        <nb-card-footer>From {{ event.start }} to {{ event.end }}</nb-card-footer>
+                        <nb-card-footer>
+                                From: {{event.start_date}} at {{event.start_time}} <br>
+                                To: {{event.end_date}} at {{event.end_time}}</nb-card-footer>
                 </nb-card>
         </nb-card-front>
         <nb-card-back>
                 <nb-card accent="primary" size="small">
                         <nb-card-header>{{ event.title }}</nb-card-header>
                         <nb-card-body>
-                                Kurzbeschreibung: {{ event.body }} <br>
-                                Kategorie: {{ event.category }} <br>
+                                Kurzbeschreibung: <br> {{ event.body }} <br><br>
+                                Kategorie: {{ event.category }} <br><br>
                                 Status: {{ event.status }}
                         </nb-card-body>
                         <nb-card-footer>

@@ -33,6 +33,8 @@ export class AddEventComponent implements OnInit {
     email: String,
     fullName: String
   };
+  private user_token: String;
+  private bearer_token: any;
 
   selectedCategory: String;
   selectedStatus: String;
@@ -49,6 +51,8 @@ export class AddEventComponent implements OnInit {
 
   canv_visible: boolean;
   delimg_button: boolean;
+  missing_inputs: boolean;
+
 
   constructor(
     private authService: NbAuthService
@@ -57,6 +61,8 @@ export class AddEventComponent implements OnInit {
         .subscribe((token: NbAuthJWTToken) => {
           if (token.isValid()) {
             this.user = token.getPayload();
+            this.user_token = token.toString();
+            this.bearer_token = 'Bearer '+this.user_token;
           }
         });
   }
@@ -64,6 +70,7 @@ export class AddEventComponent implements OnInit {
   ngOnInit(): void {
     this.canv_visible = false;
     this.delimg_button = false;
+    this.missing_inputs = false;
     this.loadCategoriesFromStorage();
   }
 
@@ -75,10 +82,42 @@ export class AddEventComponent implements OnInit {
   }
 
   uploadEvent(f: NgForm): void {
-    // sessionStorage von Events auf "true" setzen, falls erfolgreich
-    console.log(f.value);
-    console.log(this.selectedCategory);
-    console.log(this.selectedStatus);
+    if (!(f.value.title==="") && !(f.value.start_date==="") && !(f.value.start_time==="") && !(f.value.end_date==="") && !(f.value.end_time==="")) {
+      this.missing_inputs = false;
+      const json_events = {
+        title: f.value.title,
+        start_date: f.value.start_date,
+        start_time: f.value.start_time,
+        end_date: f.value.end_date,
+        end_time: f.value.end_time,
+        body: f.value.body,
+        image: this.imageURL,
+        category: f.value.cat,
+        user: this.user.email.toString(),
+        status: f.value.stat
+      };
+      const str_events = JSON.stringify(json_events);
+      const requestOptions = {
+        method: 'POST',
+        body: str_events,
+        headers: {
+          Authorization: this.bearer_token
+        }
+      };
+      fetch("/api/events", requestOptions)
+        .then(response => response.text())
+        .then(result => {
+          console.log(result);
+          sessionStorage.setItem("AddEditDeleteCallOnEvent", "true");
+          this.ngOnInit();
+        })
+        .catch(error => {
+          //ggf http status 403 & 401 verarbeiten
+          console.log('error', error);
+        });
+    } else {
+      this.missing_inputs = true;
+    }
   }
 
   setDateMinimums(f: NgForm): void {
