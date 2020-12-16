@@ -6,32 +6,32 @@
             <input nbInput fullWidth name="title" ngModel required shape="semi-round" placeholder="Title">
             <br><br>
             Start:
-            <input nbInput type="date" name="start_date" ngModel shape="semi-round" required onchange="setMinimums()">
-            <input nbInput type="time" name="start_time" ngModel shape="semi-round" required>
+            <input nbInput type="date" name="start_date" ngModel shape="semi-round" required (change)="setDateMinimums(f)">
+            <input nbInput type="time" name="start_time" ngModel [value]="stime_value" shape="semi-round" required (change)="setTimeMinimums(f, 's_t')">
             <br><br>
             End:
-            <input nbInput type="date" name="end_date" ngModel shape="semi-round" required onchange="setMinimums()">
-            <input nbInput type="time" name="end_time" ngModel shape="semi-round" required>
+            <input nbInput type="date" name="end_date" ngModel [min]="edate_min" [value]="edate_value" shape="semi-round" required (change)="setDateMinimums(f)">
+            <input nbInput type="time" name="end_time" ngModel [min]="etime_min" [value]="etime_value" shape="semi-round" required (change)="setTimeMinimums(f, 'e_t')">
             <br><br>
             <textarea nbInput fullWidth name="body" ngModel shape="semi-round" placeholder="A small description about the event..."></textarea>
             <br><br>
             Image:
-            <input nbInput type="file" name="img" ngModel shape="semi-round" onchange="showImageOnCanvas()" accept="image/png, image/jpeg" >
-            <button nbButton shape="semi-round" onclick="deleteImageUpload()"><nb-icon icon="trash-outline"></nb-icon>Delete upload</button>
-            <br><canvas *ngIf="isVisible" id="canvas" style="width: 100%;"></canvas>
+            <input nbInput fullWidth type="file" name="img_inp" ngModel id="inpimg" shape="semi-round" (change)="showImageOnCanvas()" accept="image/png, image/jpeg">
+            <br><br><canvas *ngIf="canv_visible" id="canvimg"></canvas><br>
+            <button nbButton *ngIf="delimg_button" shape="semi-round" (click)="deleteImageUpload()"><nb-icon icon="trash-outline"></nb-icon>Delete image</button>
             <br><br>
             Category:
             <nb-select shape="semi-round" name="cat" ngModel placeholder="Select category" [(selected)]="selectedCategory">
                 <nb-option value="">(no category)</nb-option>
-                <nb-option value="cat.type" *ngFor="let cat of categories">{{cat.type}}</nb-option>
+                <nb-option [value]="cat?.type" *ngFor="let cat of categories">{{cat.type}}</nb-option>
             </nb-select>
             <br><br>
             Status:
             <nb-select shape="semi-round" name="stat" ngModel placeholder="Select status" [(selected)]="selectedStatus">
                 <nb-option value="">(no status)</nb-option>
-                <nb-option value="g">Green</nb-option>
-                <nb-option value="y">Yellow</nb-option>
-                <nb-option value="r">Red</nb-option>
+                <nb-option value="In the planning" style="background-color:green">In the planning</nb-option>
+                <nb-option value="Minor issues" style="background-color:yellow">Minor issues</nb-option>
+                <nb-option value="Very critical" style="background-color:red">Very critical</nb-option>
             </nb-select>
 
             <br><br><br><br>

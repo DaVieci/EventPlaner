@@ -146,6 +146,7 @@ export class EventsComponent implements OnInit {
       .then(result => {
         console.log(result);
         sessionStorage.setItem("AddEditDeleteCallOnEvent", "true");
+        this.ngOnInit();
       })
       .catch(err => console.log(err));
   }
