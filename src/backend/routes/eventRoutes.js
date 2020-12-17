@@ -12,13 +12,10 @@ router.get('/events', authenticateToken, (req, res) => {
 });
   
 router.post('/events', authenticateToken, (req, res) => {
-    console.log("Post Event Req Body: "+JSON.parse(req.body));
-    console.log("Post Event Tes Body: "+JSON.parse(res.body));
     const event = new Event(req.body);
     event.save()
       .then(result => {
-        console.log('saved to DB');
-        //res.redirect('/events');
+        res.send('saved to DB');
       }).catch(err => console.log(err));
 });
   

@@ -94,18 +94,19 @@ export class AddEventComponent implements OnInit {
         status: f.value.stat
       };
       const str_events = JSON.stringify(json_events);
-      console.log(str_events);
+      console.log("Das ist der String mit den fugging events: "+str_events);
       const requestOptions = {
         method: 'POST',
-        body: str_events,
         headers: {
-          Authorization: this.bearer_token
-        }
+          Authorization: this.bearer_token,
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: str_events
+        
       };
       fetch("/api/events", requestOptions)
         .then(response => response.text())
         .then(result => {
-          console.log(result);
           sessionStorage.setItem("AddEditDeleteCallOnEvent", "true");
           this.ngOnInit();
         })
