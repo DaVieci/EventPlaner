@@ -21,13 +21,13 @@
             <button nbButton *ngIf="delimg_button" shape="semi-round" (click)="deleteImageUpload()"><nb-icon icon="trash-outline"></nb-icon>Delete image</button>
             <br><br><br>
             Category:
-            <nb-select shape="semi-round" name="cat" ngModel placeholder="Select category" [(selected)]="selectedCategory">
+            <nb-select shape="semi-round" name="cat" ngModel placeholder="Select category">
                 <nb-option value="">(no category)</nb-option>
                 <nb-option [value]="cat?.type" *ngFor="let cat of categories">{{cat.type}}</nb-option>
             </nb-select>
             <br><br><br>
             Status:
-            <nb-select shape="semi-round" name="stat" ngModel placeholder="Select status" [(selected)]="selectedStatus">
+            <nb-select shape="semi-round" name="stat" ngModel placeholder="Select status">
                 <nb-option value="">(no status)</nb-option>
                 <nb-option value="In the planning" style="background-color:green">In the planning</nb-option>
                 <nb-option value="Minor issues" style="background-color:yellow">Minor issues</nb-option>
