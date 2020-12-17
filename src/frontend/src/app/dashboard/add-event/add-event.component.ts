@@ -45,6 +45,7 @@ export class AddEventComponent implements OnInit {
 
   imageLink: string;
   imageURL: string = "";
+  base64Img: string;
 
   canv_visible: boolean;
   delimg_button: boolean;
@@ -76,6 +77,24 @@ export class AddEventComponent implements OnInit {
     var session_cats = sessionStorage.getItem("CategoriesJson");
     var json_cats = JSON.parse(session_cats);
     this.categories = json_cats;
+  }
+
+  uploadImage(f: NgForm): void {
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          Authorization: this.bearer_token,
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: f.value.base64Img
+        
+      };
+      fetch("/api/images", requestOptions)
+        .then(response => response.text())
+        .catch(error => {
+          //ggf http status 403 & 401 verarbeiten
+          console.log('error', error);
+        });
   }
 
   uploadEvent(f: NgForm): void {
