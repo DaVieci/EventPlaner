@@ -36,9 +36,6 @@ export class AddEventComponent implements OnInit {
   private user_token: String;
   private bearer_token: any;
 
-  selectedCategory: String;
-  selectedStatus: String;
-
   edate_min: Date;
   edate_value: Date;
   etime_min: Date;
@@ -47,7 +44,7 @@ export class AddEventComponent implements OnInit {
   stime_value: Date;
 
   imageLink: string;
-  imageURL: string;
+  imageURL: string = "";
 
   canv_visible: boolean;
   delimg_button: boolean;
@@ -93,10 +90,11 @@ export class AddEventComponent implements OnInit {
         body: f.value.body,
         image: this.imageURL,
         category: f.value.cat,
-        user: this.user.email.toString(),
+        user: this.user.email,
         status: f.value.stat
       };
       const str_events = JSON.stringify(json_events);
+      console.log(str_events);
       const requestOptions = {
         method: 'POST',
         body: str_events,
