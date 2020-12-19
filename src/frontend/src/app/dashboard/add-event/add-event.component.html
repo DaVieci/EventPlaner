@@ -2,18 +2,18 @@
     <nb-card-body>
         <nb-card-header><h4 style="text-align: center;">Add new Event</h4></nb-card-header>
         <br><br><br>
-        <form #f="ngForm" (ngSubmit)="uploadEventWithImage(f)" novalidate>
-            <input nbInput fullWidth name="title" ngModel required shape="semi-round" placeholder="Title">
+        <form #f="ngForm" novalidate>
+            <input nbInput fullWidth name="title" id="title" ngModel [value]="title_value" required shape="semi-round" placeholder="Title">
             <br><br><br>
             Start:
-            <input nbInput type="date" name="start_date" ngModel shape="semi-round" required (change)="setDateMinimums(f)">
-            <input nbInput type="time" name="start_time" ngModel [value]="stime_value" shape="semi-round" required (change)="setTimeMinimums(f, 's_t')">
+            <input nbInput type="date" name="start_date" id="start_date" ngModel [value]="sdate_value" shape="semi-round" required (change)="setDateMinimums(f)">
+            <input nbInput type="time" name="start_time" id="start_time" ngModel [value]="stime_value" shape="semi-round" required (change)="setTimeMinimums(f, 's_t')">
             <br><br><br>
             End:
-            <input nbInput type="date" name="end_date" ngModel [min]="edate_min" [value]="edate_value" shape="semi-round" required (change)="setDateMinimums(f)">
-            <input nbInput type="time" name="end_time" ngModel [min]="etime_min" [value]="etime_value" shape="semi-round" required (change)="setTimeMinimums(f, 'e_t')">
+            <input nbInput type="date" name="end_date" id="end_date" ngModel [min]="edate_min" [value]="edate_value" shape="semi-round" required (change)="setDateMinimums(f)">
+            <input nbInput type="time" name="end_time" id="end_time" ngModel [min]="etime_min" [value]="etime_value" shape="semi-round" required (change)="setTimeMinimums(f, 'e_t')">
             <br><br><br>
-            <textarea nbInput fullWidth name="body" ngModel shape="semi-round" placeholder="A description about the event..."></textarea>
+            <textarea nbInput fullWidth name="body" id="body" ngModel [value]="body_value" shape="semi-round" placeholder="A description about the event..."></textarea>
             <br><br><br>
             Image:
             <input nbInput type="file" name="img_inp" ngModel id="inpimg" shape="semi-round" style="width: 100%;" (change)="showImageOnCanvas()" accept="image/png, image/jpeg">
@@ -21,31 +21,34 @@
             <button nbButton *ngIf="delimg_button" shape="semi-round" (click)="deleteImageUpload()"><nb-icon icon="trash-outline"></nb-icon>Delete image</button>
             <br><br><br>
             Category:
-            <nb-select shape="semi-round" name="cat" ngModel placeholder="Select category">
+            <nb-select shape="semi-round" name="cat" id="cat" ngModel [(selected)]="sel_cat" placeholder="Select category">
                 <nb-option value="">(no category)</nb-option>
                 <nb-option [value]="cat?.type" *ngFor="let cat of categories">{{cat.type}}</nb-option>
             </nb-select>
             <br><br><br>
             Status:
-            <nb-select shape="semi-round" name="stat" ngModel placeholder="Select status">
+            <nb-select shape="semi-round" name="stat" id="stat" ngModel [(selected)]="sel_stat" placeholder="Select status">
                 <nb-option value="">(no status)</nb-option>
                 <nb-option value="In the planning" style="background-color:green">In the planning</nb-option>
                 <nb-option value="Minor issues" style="background-color:yellow">Minor issues</nb-option>
                 <nb-option value="Very critical" style="background-color:red">Very critical</nb-option>
             </nb-select>
             <br><br><br>
-            <nb-alert *ngIf="missing_inputs" outline="danger" role="alert">
+            <nb-alert *ngIf="success_msg" outline="success" role="alert">
+                <p class="alert-title"><b>New event has got pushed! Go to the <a [routerLink]="['/']">front page</a>.</b></p>
+            </nb-alert>
+            <nb-alert *ngIf="error_msg" outline="danger" role="alert">
                 <p class="alert-title"><b>Please type in a proper title and provide a time range!</b></p>
             </nb-alert>
             <br><br>
-            <button nbButton 
+            <button nbButton
                     shape="semi-round"
+                    (click)="uploadEventWithImage(f)"
                     fullWidth>
                     <nb-icon icon="arrow-right-outline"></nb-icon>
                     Submit
             </button>
-            <br><br>
+            <button *ngIf="dummy_button" id="dummy_button" style="visibility: hidden;"></button>
         </form>
-        <!-- <button nbButton *ngIf="delimg_button" shape="semi-round" (click)="uploadImage()">Upload image</button> -->
     </nb-card-body>
 </nb-card>

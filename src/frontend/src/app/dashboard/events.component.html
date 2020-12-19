@@ -1,59 +1,7 @@
-<!-- Tabelle, falls man die Daten angezeigt haben möchte
-<table class="table table-striped">
-        <thead>
-                <tr>
-                        <th>ID</th>
-                        <th>Title</th>
-                        <th>Start</th>
-                        <th>End</th>
-                        <th>Body</th>
-                        <th>User</th>
-                </tr>
-        </thead>
-        <tbody>
-                <tr *ngFor="let event of events">
-                        <td>{{ event._id }}</td>
-                        <td>{{ event.title }}</td>
-                        <td>{{ event.start }}</td>
-                        <td>{{ event.end }}</td>
-                        <td>{{ event.body }}</td>
-                        <td>{{ event.user }}</td>
-                </tr>
-        </tbody>
-</table>
-Ende Tabelle -->
-
-<!-- Nur als Dummy Element für Test-Zwecke! Gern nach belieben rauslöschen
-<div class="event_cards">
-<nb-flip-card>
-        <nb-card-front>
-                <nb-card status="primary" size="small">
-                        <nb-card-header>TITEL VON EVENT</nb-card-header>
-                        <nb-card-body>
-                                <img src="./../../assets/event_pics/city1.jpg" alt="city" class="event_pic">
-                        </nb-card-body>
-                        <nb-card-footer>From 01.01.1001 at 01:01 to 10.10.0110 at 10:10</nb-card-footer>
-                </nb-card>
-        </nb-card-front>
-        <nb-card-back>
-                <nb-card accent="primary" size="small">
-                        <nb-card-header>TITEL VON EVENT</nb-card-header>
-                        <nb-card-body>
-                                Kurzbeschreibung: Das ist eine Beispielbeschreibung für das Dummy-Element <br>
-                                Kategorie: Privates Treffen <br>
-                                Status: Gelb
-                        </nb-card-body>
-                        <nb-card-footer>Hier kommen 2 Buttons rein: Edit & Delete</nb-card-footer>
-                </nb-card>
-        </nb-card-back>
-</nb-flip-card>
-</div>
-Ende Dummy -->
-
 <form #f="ngForm" (ngSubmit)="filter_events(f)" class='date_picker' novalidate>
         <input nbInput name="date_range" ngModel class="date_input" shape="semi-round" placeholder="Pick Date Range" [nbDatepicker]="dateTimePicker">
         <nb-rangepicker #dateTimePicker></nb-rangepicker>
-        <nb-select multiple name="cats" ngModel shape="semi-round" placeholder="Categories">
+        <nb-select multiple name="cats" id="cat_arr" ngModel shape="semi-round" placeholder="Categories">
                 <nb-option [value]="cat?.type" *ngFor="let cat of categories">{{cat.type}}</nb-option>
         </nb-select>
         <button nbButton id="filter_button" shape="semi-round">

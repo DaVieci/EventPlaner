@@ -1,7 +1,7 @@
-import { Time } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { NbFormFieldComponent } from '@nebular/theme';
+import { ActivatedRoute } from '@angular/router';
+
 
 import { NbAuthJWTToken, NbAuthService } from '@nebular/auth';
 
@@ -14,10 +14,13 @@ import { NbAuthJWTToken, NbAuthService } from '@nebular/auth';
 })
 export class AddEventComponent implements OnInit {
 
-  event: {
+  events: {
+    _id: String,
     title: String,
-    start: Date,
-    end: Date,
+    start_date: String,
+    start_time: String,
+    end_date: String,
+    end_time: String,
     body: String,
     image: String,
     category: String,
@@ -36,12 +39,21 @@ export class AddEventComponent implements OnInit {
   private user_token: String;
   private bearer_token: any;
 
-  edate_min: Date;
-  edate_value: Date;
-  etime_min: Date;
-  etime_value: Date;
+  id_event: string;
 
+  title_value: string;
+  sdate_value: Date;
   stime_value: Date;
+  edate_value: Date;
+  edate_min: Date;
+  etime_value: Date;
+  etime_min: Date;
+  body_value: string;
+
+  sel_cat: string;
+  sel_stat: string;
+
+  dummy_button: boolean;
 
   imageLink: string;
   imageURL: string = "";
@@ -49,27 +61,57 @@ export class AddEventComponent implements OnInit {
 
   canv_visible: boolean;
   delimg_button: boolean;
-  missing_inputs: boolean;
+  error_msg: boolean;
+  success_msg: boolean;
 
 
   constructor(
-    private authService: NbAuthService
+    private authService: NbAuthService,
+    private acRoute: ActivatedRoute
   ) {
     this.authService.onTokenChange()
-        .subscribe((token: NbAuthJWTToken) => {
-          if (token.isValid()) {
-            this.user = token.getPayload();
-            this.user_token = token.toString();
-            this.bearer_token = 'Bearer '+this.user_token;
-          }
-        });
+      .subscribe((token: NbAuthJWTToken) => {
+        if (token.isValid()) {
+          this.user = token.getPayload();
+          this.user_token = token.toString();
+          this.bearer_token = 'Bearer '+this.user_token;
+        }
+      });
+    
   }
 
   ngOnInit(): void {
     this.canv_visible = false;
     this.delimg_button = false;
-    this.missing_inputs = false;
+    this.error_msg = false;
+    this.success_msg = false;
+    this.dummy_button = true;
+    // div für success
     this.loadCategoriesFromStorage();
+    this.id_event = this.acRoute.snapshot.paramMap.get('id');
+    if (this.id_event) {
+      if (sessionStorage.getItem("EventEditted")==="true") {
+        sessionStorage.removeItem("EventEditted");
+        this.success_msg = true;
+      } else {
+        console.log(this.id_event); 
+        this.getEventById(this.id_event);
+        setTimeout(()=>{
+          this.loadEventInInputs();
+        }, 1000);
+      }
+    } else if (sessionStorage.getItem("EventCreated")==="true") {
+      sessionStorage.removeItem("EventCreated");
+      
+      console.log("Clear inputs");
+      this.clearAllInputs();
+      this.success_msg = true;
+     
+    }
+    setTimeout(()=>{
+      console.log("DUMMY BUTTON");
+      (<HTMLButtonElement>document.getElementById("dummy_button")).click();
+    }, 1000);
   }
 
   loadCategoriesFromStorage(): void {
@@ -79,16 +121,55 @@ export class AddEventComponent implements OnInit {
     this.categories = json_cats;
   }
 
+  getEventById(id: string): void {
+    var requestOptions = {
+      method: 'GET',
+      headers: {
+        Authorization: this.bearer_token
+      }
+    };
+    fetch(`/api/events/${id}`, requestOptions)
+      .then(response => response.text()) 
+      .then(result => {
+        console.log(result);
+        var json_event = JSON.parse(result);
+        sessionStorage.setItem("EditEventJson", JSON.stringify(json_event));
+      })
+      .catch(err => console.log(err));
+  }
+
+  loadEventInInputs(): void {
+    var session_event = sessionStorage.getItem("EditEventJson");
+    var json_event = JSON.parse(session_event);
+    console.log(json_event);
+    this.title_value = json_event.title;
+    this.sdate_value = json_event.start_date;
+    this.stime_value = json_event.start_time;
+    this.edate_value = json_event.end_date;
+    this.etime_value = json_event.end_time;
+    this.body_value = json_event.body;
+    //this.imageLink = json_event.image;
+    //this.showImageOnCanvas();
+    this.sel_cat = json_event.category;
+    this.sel_stat = json_event.status;
+  }
+
+  clearAllInputs(): void {
+    this.title_value = "";
+    this.sdate_value = null;
+    this.stime_value = null;
+    this.edate_value = null;
+    this.etime_value = null;
+    this.body_value = "";
+    (<HTMLInputElement>document.getElementById("inpimg")).value = null;
+  }
+
   //upload Event und image combined
   uploadEventWithImage(f: NgForm): void {
 
 
-      var imgURL = this.uploadImage()
-
-      while(imgURL === "") {
-        console.log("looooooop");
-      }
-
+      //var imgURL = this.uploadImage()
+      var imgURL ="IRGENDWAS";
       if (!(imgURL === "")) {
         this.uploadEvent(f, imgURL);
       } else {
@@ -131,7 +212,7 @@ export class AddEventComponent implements OnInit {
 
   uploadEvent(f: NgForm, imgURL: string): void {
     if (!(f.value.title==="") && !(f.value.start_date==="") && !(f.value.start_time==="") && !(f.value.end_date==="") && !(f.value.end_time==="")) {
-      this.missing_inputs = false;
+      this.error_msg = false;
       const json_events = {
         title: f.value.title,
         start_date: f.value.start_date,
@@ -139,7 +220,7 @@ export class AddEventComponent implements OnInit {
         end_date: f.value.end_date,
         end_time: f.value.end_time,
         body: f.value.body,
-        image: imgURL,
+        image: "",  //vorerst noch nix
         category: f.value.cat,
         user: this.user.email,
         status: f.value.stat
@@ -158,6 +239,7 @@ export class AddEventComponent implements OnInit {
         .then(response => response.text())
         .then(result => {
           sessionStorage.setItem("AddEditDeleteCallOnEvent", "true");
+          sessionStorage.setItem("EventCreated", "true");
           this.ngOnInit();
         })
         .catch(error => {
@@ -165,7 +247,7 @@ export class AddEventComponent implements OnInit {
           console.log('error', error);
         });
     } else {
-      this.missing_inputs = true;
+      this.error_msg = true;
     }
   }
 
@@ -210,6 +292,7 @@ export class AddEventComponent implements OnInit {
       background.src = imglink;
     }else {
       background.src = URL.createObjectURL(image.files[0]);
+      
     }
     background.onload = function () {
       var canvas = <HTMLCanvasElement>document.getElementById("canvimg");

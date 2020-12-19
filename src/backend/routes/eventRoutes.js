@@ -19,7 +19,7 @@ router.post('/events', authenticateToken, (req, res) => {
       }).catch(err => console.log(err));
 });
   
-router.get('/events/:id', (req, res) => {
+router.get('/events/:id', authenticateToken, (req, res) => {
     const id = req.params.id;
     Event.findById(id)
       .then(result => {
