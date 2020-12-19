@@ -4,11 +4,11 @@ const authenticateToken = require('../middleware/auth');
 
 const router = express.Router();
 
-router.get('/images/:imgUrl', authenticateToken, (req, res) => {
+router.get('/images/:imgUrl', (req, res) => {
     const imgUrl = req.params.imgUrl;
     Image.findById(imgUrl)
         .then(result => {
-            res.send(result);
+            res.send(result.base64img);
         }).catch(err => console.log(err));
 })
 

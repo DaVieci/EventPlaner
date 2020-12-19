@@ -47,6 +47,8 @@ export class AddEventComponent implements OnInit {
   imageURL: string = "";
   base64Img: string;
 
+  imgURL: string;
+
   canv_visible: boolean;
   delimg_button: boolean;
   missing_inputs: boolean;
@@ -80,26 +82,17 @@ export class AddEventComponent implements OnInit {
   }
 
   //upload Event und image combined
-  uploadEventWithImage(f: NgForm): void {
+  async uploadEventWithImage(f: NgForm): Promise <void> {
 
-
-      var imgURL = this.uploadImage()
-
-      while(imgURL === "") {
-        console.log("looooooop");
-      }
-
-      if (!(imgURL === "")) {
-        this.uploadEvent(f, imgURL);
-      } else {
-        console.log("IF/ELSE: something went wrong");
-      }
-
+      this.uploadImage();
+      
+      setTimeout(() => {
+        console.log('Hier sollte die Image URL sein!!!\n' + this.imgURL);
+        this.uploadEvent(f, this.imgURL);
+      }, 1000);
   }
 
-  uploadImage(): string {
-
-    var img_url = "";
+  uploadImage(): void {
 
     const imgBody = {
       base64img: sessionStorage.getItem("ImageBase64")
@@ -116,17 +109,14 @@ export class AddEventComponent implements OnInit {
     fetch("/api/images", requestOptions)
       .then(response => response.text())
       .then(response => {
-        //response = response.replace('"', '');
-        var imgURL = '/api/images/'+response;
-        console.log(imgURL);
-        img_url = imgURL;
+        response = response.replace(new RegExp('"', 'g'), '');
+        this.imgURL = response;
+        console.log(this.imgURL);
       })
       .catch(error => {
         //ggf http status 403 & 401 verarbeiten
         console.log('error', error);
       });
-
-      return img_url;
   }
 
   uploadEvent(f: NgForm, imgURL: string): void {

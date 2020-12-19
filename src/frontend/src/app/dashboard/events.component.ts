@@ -36,6 +36,8 @@ export class EventsComponent implements OnInit {
     type: String
   }
 
+  imageID: string;
+
   selectedItem: any[];
 
   OneDayInMillisec = 86400000;
@@ -109,15 +111,37 @@ export class EventsComponent implements OnInit {
     fetch("/api/events", requestOptions)
       .then(response => response.text())
       .then(result => {
-        console.log(result);
         var json_event = JSON.parse(result);
         sessionStorage.setItem("EventsJson", JSON.stringify(json_event));
+      })
+      .then(()=>{
+        var jsonString = sessionStorage.getItem("EventsJson");
+        var json = JSON.parse(jsonString);
+        //this.getImage(json[0].image);
+        this.imageID = json[0].image;
       })
       .catch(error => {
         //ggf http status 403 & 401 verarbeiten
         console.log('error', error);
       });
   }
+
+  // getImage(): void {
+  //   var requestOptions = {
+  //     method: 'GET',
+  //     headers: {
+  //       Authorization: this.bearer_token
+  //     }
+  //   };
+  //   fetch("/api/images/5fdce7bed248582623866e8f", requestOptions)
+  //     .then(response => {
+  //       console.log('PENIS'+response);
+  //     })
+  //     .catch(error => {
+  //       //ggf http status 403 & 401 verarbeiten
+  //       console.log('error', error);
+  //     });
+  // }
 
   getCategories(): void {
     var requestOptions = {
