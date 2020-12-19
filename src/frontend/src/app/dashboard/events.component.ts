@@ -36,6 +36,8 @@ export class EventsComponent implements OnInit {
     type: String
   }
 
+  image_path = '../frontend/src/assets/event_pics/';
+
   imageID: string;
 
   selectedItem: any[];
@@ -121,7 +123,7 @@ export class EventsComponent implements OnInit {
         var jsonString = sessionStorage.getItem("EventsJson");
         var json = JSON.parse(jsonString);
         this.imgID = json[0].image;
-        this.imgURL = "/api/images/" + this.imgID;
+        this.imgURL = this.image_path + this.imgID;
         console.log("ImageURL: "+this.imgURL);
       })
       .catch(error => {
@@ -130,22 +132,23 @@ export class EventsComponent implements OnInit {
       });
   }
 
-  getImage(): void {
-    var requestOptions = {
-      method: 'GET',
-      headers: {
-        Authorization: this.bearer_token
-      }
-    };
-    fetch(this.imgURL, requestOptions)
-      .then(res => {
-        //something with res.body
-      })
-      .catch(error => {
-        //ggf http status 403 & 401 verarbeiten
-        console.log('error', error);
-      });
-  }
+  // getImage(): void {
+  //   var requestOptions = {
+  //     method: 'GET',
+  //     headers: {
+  //       Authorization: this.bearer_token
+  //     }
+  //   };
+  //   fetch(this.imgURL, requestOptions)
+  //     .then(res => {
+  //       //something with res.body
+  //       console.log(res.body);
+  //     })
+  //     .catch(error => {
+  //       //ggf http status 403 & 401 verarbeiten
+  //       console.log('error', error);
+  //     });
+  // }
 
   getCategories(): void {
     var requestOptions = {

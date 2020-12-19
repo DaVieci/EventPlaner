@@ -26,6 +26,14 @@ router.get('/events/:id', (req, res) => {
         res.send(result);
       }).catch(err => console.log(err));
 });
+
+router.put('/events/:id', authenticateToken, (req, res) => {
+  const id = req.params.id;
+  Event.update({_id: id})
+    .then(result => {
+      res.send('saved to DB');
+    }).catch(err => console.log(err));
+})
   
 router.delete('/events/:id', authenticateToken, (req, res) => {
     const id = req.params.id;

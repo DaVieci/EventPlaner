@@ -47,7 +47,8 @@ export class AddEventComponent implements OnInit {
   imageURL: string = "";
   base64Img: string;
 
-  imgURL: string;
+  imgId: string;
+  image_path = '../frontend/src/assets/event_pics/';
 
   canv_visible: boolean;
   delimg_button: boolean;
@@ -87,8 +88,8 @@ export class AddEventComponent implements OnInit {
       this.uploadImage();
       
       setTimeout(() => {
-        console.log('Hier sollte die Image URL sein!!!\n' + this.imgURL);
-        this.uploadEvent(f, this.imgURL);
+        console.log('Hier sollte die Image ID sein!!!\n' + this.imgId);
+        this.uploadEvent(f, this.imgId);
       }, 1000);
   }
 
@@ -110,8 +111,8 @@ export class AddEventComponent implements OnInit {
       .then(response => response.text())
       .then(response => {
         response = response.replace(new RegExp('"', 'g'), '');
-        this.imgURL = response;
-        console.log(this.imgURL);
+        this.imgId = response;
+        console.log(this.imgId);
       })
       .catch(error => {
         //ggf http status 403 & 401 verarbeiten
@@ -119,7 +120,7 @@ export class AddEventComponent implements OnInit {
       });
   }
 
-  uploadEvent(f: NgForm, imgURL: string): void {
+  uploadEvent(f: NgForm, imgId: string): void {
     if (!(f.value.title==="") && !(f.value.start_date==="") && !(f.value.start_time==="") && !(f.value.end_date==="") && !(f.value.end_time==="")) {
       this.missing_inputs = false;
       const json_events = {
@@ -129,7 +130,7 @@ export class AddEventComponent implements OnInit {
         end_date: f.value.end_date,
         end_time: f.value.end_time,
         body: f.value.body,
-        image: imgURL,
+        image: imgId,
         category: f.value.cat,
         user: this.user.email,
         status: f.value.stat
