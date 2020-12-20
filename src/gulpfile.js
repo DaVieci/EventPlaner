@@ -32,7 +32,7 @@ gulp.task('build', () => {
 // Lint the Frontend using Angular
 gulp.task('lintFrontend', () => {
     return gulp.src('.', {read: false})
-    .pipe(exec('cd ./Frontend && ng lint'))
+    .pipe(exec('cd ./frontend && ng lint'))
     .pipe(exec.reporter());
     })
 
@@ -56,7 +56,7 @@ gulp.task('runFrontend', () => {
 gulp.task('default',
     gulp.series(
         gulp.parallel('install', 'clean'),
-        gulp.parallel('lintFrontend'),
+        //gulp.parallel('lintFrontend'),
         gulp.parallel('build'),
         gulp.parallel('runBackend', 'runFrontend')),
         () => {})
