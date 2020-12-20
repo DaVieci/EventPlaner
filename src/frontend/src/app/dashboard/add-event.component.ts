@@ -55,12 +55,13 @@ export class AddEventComponent implements OnInit {
 
   dummy_button: boolean;
 
+  image_value: string;
   imageLink: string;
   imageURL: string = "";
   base64Img: string;
 
   imgId: string;
-  image_path = '../frontend/src/assets/event_pics/';
+  image_path = './../../assets/event_pics/';
 
   canv_visible: boolean;
   delimg_button: boolean;
@@ -125,8 +126,9 @@ export class AddEventComponent implements OnInit {
   //upload Event und image combined
   uploadEventWithImage(f: NgForm): void {
       //this.uploadImage();
-        console.log('Hier sollte die Image ID sein!!!\n' + this.imgId);
-        this.uploadEvent(f, this.imgId);
+      //if (this.imageLink===) hier kommt noch was
+      console.log('Hier sollte die Image ID sein!!!\n' + this.imgId);
+      this.uploadEvent(f, this.imgId);
       
   }
 
@@ -157,7 +159,7 @@ export class AddEventComponent implements OnInit {
     this.edate_value = json_event.end_date;
     this.etime_value = json_event.end_time;
     this.body_value = json_event.body;
-    //this.imageLink = json_event.image;
+    this.image_value = json_event.image;
     //this.showImageOnCanvas();
     this.sel_cat = json_event.category;
     this.sel_stat = json_event.status;
