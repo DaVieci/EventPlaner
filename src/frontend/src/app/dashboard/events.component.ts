@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NbAuthJWTToken, NbAuthService } from '@nebular/auth';
-import { NbDatepicker, NbDateService, NbRangepickerComponent } from '@nebular/theme';
 import { Router } from '@angular/router';
 
 @Component({
@@ -49,6 +48,11 @@ export class EventsComponent implements OnInit {
   imgID: any;
   imgURL: string;
 
+  /**
+   * Initialize the route service to navigate to other sites and the authentication service to get the user token which holds their full name and email address.
+   * @param authService authentication service provided by Nebular
+   * @param router router service
+   */
   constructor(
     private authService: NbAuthService,
     private router: Router
@@ -60,16 +64,17 @@ export class EventsComponent implements OnInit {
             this.bearer_token = 'Bearer '+this.user_token;
           }
         });
-    console.log("CONSTRUCTOR CALL");
     }
-
+  
+  /**
+   * Calls `getEvents()` and `getCategories()` to get categories and all events from user and stores them in storages on page transition.
+   * The apis will only be called afterwards if one event has got added, editted or deleted. 
+   */
   ngOnInit(): void {
-    console.log("ONINIT CALL");
     if(!this.refreshPageOnTransition()) {
       if(!(sessionStorage.getItem("AddEditDeleteCallOnEvent")==="false")) {
         sessionStorage.setItem("AddEditDeleteCallOnEvent", "false");
         this.getEvents();
-        // evtl. neuer if-Zweig für Kategorien, falls Add/Delete Category implementiert werden soll!
         this.getCategories();
       }
       setTimeout(()=>{
@@ -78,6 +83,10 @@ export class EventsComponent implements OnInit {
     }
   }
 
+  /**
+   * Refreshes the page if coming from the login page or entering the site from scratch.
+   * @returns `true` when coming from login page, `false` when page is getting refreshed for the next time
+   */
   refreshPageOnTransition(): boolean {
     if (!(sessionStorage.getItem("pageTransition")==="false")) {
       sessionStorage.setItem("pageTransition", "false");
@@ -88,6 +97,10 @@ export class EventsComponent implements OnInit {
     }
   }
 
+  /**
+   * Loads categories from storage and sets them in the input field. 
+   * Calls the `filter_events(f: NgForm)` function by dynamically clicking on the filter button of the HTML file.
+   */
   loadEventsAndCategories(): void {
     var session_cats = sessionStorage.getItem("CategoriesJson");
     var json_cats = JSON.parse(session_cats);
@@ -95,6 +108,10 @@ export class EventsComponent implements OnInit {
     (<HTMLButtonElement>document.getElementById("filter_button")).click();
   }
 
+  /**
+   * Sets the options for a get api with the user token and calls it.
+   * If successful, it will return all events form the user. Then they will be stored as a json string and the image url will be set.
+   */
   getEvents(): void {
     var requestOptions = {
       method: 'GET',
@@ -139,6 +156,10 @@ export class EventsComponent implements OnInit {
   //     });
   // }
 
+  /**
+   * Sets the options for a get api and calls it.
+   * If successful, it will return all categories. Then they will be stored as a json string. 
+   */
   getCategories(): void {
     var requestOptions = {
       method: 'GET'
@@ -156,6 +177,10 @@ export class EventsComponent implements OnInit {
     });
   }
 
+  /**
+   * Takes the data inputs of date und category to apply filtering on the json file that contains all events.
+   * @param f a json data which contains values of the form inputs
+   */
   filter_events(f: NgForm): void {
     delete this.events;
     var session_events = sessionStorage.getItem("EventsJson");
@@ -200,9 +225,16 @@ export class EventsComponent implements OnInit {
       console.log("Date Picker: "+f.value.date_range);
       console.log("Categories Select: "+f.value.cats);
     }
-    this.events = filtered_events;
+    this.events = filtered_events.sort();
   }
 
+  /**
+   * Checks if the given `date` is in the range of a `start` date and an `end` date.
+   * @param date A date as string
+   * @param start start date in milliseconds since 1970
+   * @param end end date in milliseconds since 1970
+   * @returns `true`or `false` 
+   */
   checkDateBetweenStartAndEnd(date: string, start: number, end: number): boolean {
     var json_date = new Date(date);
     if ((start<=json_date.getTime()) && (json_date.getTime()<=end)) {
@@ -212,11 +244,22 @@ export class EventsComponent implements OnInit {
     } 
   }
 
-  edit_event(event_id: String) {
+  /**
+   * Navigates to the /add-event site with the given `event_id` to edit the whole event.
+   * @param event_id id of the event
+   */
+  edit_event(event_id: String): void {
     this.router.navigate(['/events/edit', event_id]);
   }
 
-  delete_event(event_id: String) {
+  /**
+   * Sets the options for a delete api with user token and the event id and calls it.
+   * If successful, it will delete the event with the given `event_id`.
+   * The variable for adding, editting or deleting an event will set to true to call the get apis after page refresh.
+   * Then it will call `NgOnInit()` to 
+   * @param event_id id of the event
+   */
+  delete_event(event_id: String): void {
     var userselection = confirm("Are you sure you want to delete this event?");
     if (userselection === true) {
       var requestOptions = {

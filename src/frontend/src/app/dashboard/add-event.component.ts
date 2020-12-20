@@ -55,13 +55,13 @@ export class AddEventComponent implements OnInit {
 
   dummy_button: boolean;
 
-  image_value: string;
+  image_from_json: string;
   imageLink: string;
-  imageURL: string = "";
+  imageURL: string;
   base64Img: string;
 
   imgId: string;
-  image_path = './../../assets/event_pics/';
+  image_path: string = "./../../assets/event_pics/";
 
   canv_visible: boolean;
   delimg_button: boolean;
@@ -125,12 +125,34 @@ export class AddEventComponent implements OnInit {
 
   //upload Event und image combined
   uploadEventWithImage(f: NgForm): void {
-      //this.uploadImage();
-      //if (this.imageLink===) hier kommt noch was
-      console.log('Hier sollte die Image ID sein!!!\n' + this.imgId);
-      this.uploadEvent(f, this.imgId);
+    //this.uploadImage();
+    if (this.imageURL) this.createImage();
+    //this.uploadEvent(f);
       
   }
+  
+  createImage(): void {
+    var image_blob = this.convertDataUrlToBlob();
+    var path = location.pathname;
+    var filename = "img_" + Date.now() + ".png";
+    const file = new File([image_blob], filename, {type: "image/png"});
+    console.log(path);
+    console.log(file);
+
+  }
+
+  convertDataUrlToBlob(): Blob {
+    const arr = this.imageURL.split(',');
+    const mime = arr[0].match(/:(.*?);/)[1];
+    console.log(mime);
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], {type: mime});
+}
 
   getEventById(): void {
     var requestOptions = {
@@ -159,8 +181,8 @@ export class AddEventComponent implements OnInit {
     this.edate_value = json_event.end_date;
     this.etime_value = json_event.end_time;
     this.body_value = json_event.body;
-    this.image_value = json_event.image;
-    //this.showImageOnCanvas();
+    this.image_from_json = json_event.image;
+    this.showImageOnCanvas();
     this.sel_cat = json_event.category;
     this.sel_stat = json_event.status;
   }
@@ -211,7 +233,7 @@ export class AddEventComponent implements OnInit {
     if (!(f.value.stat==="")) this.sel_stat = f.value.stat;
   }
 
-  uploadEvent(f: NgForm, imgId: string): void {
+  uploadEvent(f: NgForm): void {
     this.setInputValueToFormValue(f);
     console.log(this.stime_value,this.etime_value);
     var sd = this.sdate_value.toString();
@@ -310,9 +332,8 @@ export class AddEventComponent implements OnInit {
     this.delimg_button = true;
     var image = <HTMLInputElement>document.getElementById("inpimg");
     var background = new Image();
-    var imglink = this.imageLink;
+    var imglink = this.image_from_json;
     if(imglink){
-      // falls wir edit event implementieren möchten, wird imglink vom bereits vorhandenen Image gesetzt
       background.src = imglink;
     }else {
       background.src = URL.createObjectURL(image.files[0]);
@@ -339,9 +360,15 @@ export class AddEventComponent implements OnInit {
     var context = canvas.getContext("2d");
     context.clearRect(0, 0, canvas.width, canvas.height);
     this.imageURL = "";
-    this.imageLink = "";
     this.delimg_button = false;
     this.canv_visible = false;
+    if (this.image_from_json) this.deleteOldImageFromJson();
+  }
+
+  deleteOldImageFromJson(): void {
+    var path_to_img = this.image_from_json;
+    this.image_from_json = "";
+    // delete file from path_to_img
   }
 
 }

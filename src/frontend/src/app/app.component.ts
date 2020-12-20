@@ -12,6 +12,10 @@ export class AppComponent {
   title = 'EventPlanner';
   user_loggedIn: boolean;
   
+  /**
+   * Sets up authentication service and get information if user is logged it.
+   * @param authService authentication service provided by Nebular.
+   */
   constructor(
     private authService: NbAuthService
   ) { 

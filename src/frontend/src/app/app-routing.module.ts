@@ -15,36 +15,6 @@ const routes: Routes = [
   { path: 'events', loadChildren: dashboardModule, canActivate: [AuthGuard] },
   { path: 'auth', loadChildren: authModule },
   { path: '**', component: ErrorComponent }
-  /*{ path: 'auth',
-    component: NbAuthComponent,
-    children: [
-      {
-        path: '',
-        redirectTo: '/auth/login', 
-        pathMatch: 'full'
-      },
-      {
-        path: 'login',
-        component: NbLoginComponent,
-      },
-      {
-        path: 'register',
-        component: NbRegisterComponent,
-      },
-      {
-        path: 'logout',
-        component: NbLogoutComponent,
-      },
-      {
-        path: 'request-password',
-        component: NbRequestPasswordComponent,
-      },
-      {
-        path: 'reset-password',
-        component: NbResetPasswordComponent,
-      }
-    ]
-  },*/
 ]
 
 @NgModule({

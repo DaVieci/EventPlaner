@@ -1,3 +1,4 @@
 src/frontend/node_modules/
+src/frontend/dist/
 src/backend/node_modules/
 src/node_modules/
