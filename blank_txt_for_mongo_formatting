@@ -1,8 +1,0 @@
-db.events.insert({
-    title: 'testevent one',
-    body: 'Body of testevent',
-    date: Date(),
-    user: {
-        name: 'Bela'
-    }
-})

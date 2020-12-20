@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const categorySchema = new Schema ({
+/** Schema for categories
+ * @constructor
+ */
+const categorySchema = new Schema({
     type: {
         type: String,
         required: true

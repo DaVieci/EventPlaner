@@ -1,50 +1,50 @@
 openapi: 3.0.0
 info:
-  description: 'This is the documentation for our API Backend of the Event Planner'
-  version: '1.0.0'
-  title: 'API for Event Planner'
+  description: "This is the documentation for our API Backend of the Event Planner"
+  version: "1.0.0"
+  title: "API for Event Planner"
 
 tags:
-  - name: 'user'
-    description: 'Sign-up or login as user'
-  - name: 'events'
-    description: 'Show, create or delete events'
-  - name: 'category'
-    description: 'Add existing categories to events or create new'
+  - name: "user"
+    description: "Sign-up or login as user"
+  - name: "events"
+    description: "Show, create or delete events"
+  - name: "category"
+    description: "Add existing categories to events or create new"
 
 paths:
-  '/user/sign-up':
+  "/user/sign-up":
     post:
       tags:
-        - 'user'
+        - "user"
 
-      summary: 'Creates a new User Object in DB an returns token'
+      summary: "Creates a new User Object in DB an returns token"
       requestBody:
         content:
           application/json:
           shema:
-            $ref: './models/users'
+            $ref: "./models/users"
       responses:
         200:
-          description: 'OK'
+          description: "OK"
         400:
-          description: 'Bad data input'
+          description: "Bad data input"
         401:
-          description: 'Token not valid'
+          description: "Token not valid"
         500:
-          description: 'Something went wrong'
+          description: "Something went wrong"
 
-  '/user/login':
+  "/user/login":
     post:
       tags:
-        - 'user'
+        - "user"
 
-      summary: 'Login as a user an get a token for a 2hr session'
+      summary: "Login as a user an get a token for a 2hr session"
       requestBody:
         content:
           application/json:
           shema:
-            $ref: './models/users'
+            $ref: "./models/users"
       parameters:
         - email: userEmail
           in: body
@@ -60,41 +60,41 @@ paths:
             type: String
       responses:
         200:
-          description: 'OK'
+          description: "OK"
         400:
-          description: 'Bad data input'
+          description: "Bad data input"
         401:
-          description: 'Token not valid'
+          description: "Token not valid"
         500:
-          description: 'Something went wrong'
+          description: "Something went wrong"
 
-  '/user/logout':
+  "/user/logout":
     post:
       tags:
-        - 'user'
+        - "user"
 
-      summary: 'Logout from user'
+      summary: "Logout from user"
       requestBody:
         content:
           application/json:
           shema:
-            $ref: './models/users'
+            $ref: "./models/users"
       responses:
         200:
-          description: 'OK'
+          description: "OK"
         400:
-          description: 'Bad data input'
+          description: "Bad data input"
         401:
-          description: 'Token not valid'
+          description: "Token not valid"
         500:
-          description: 'Something went wrong'
+          description: "Something went wrong"
 
-  '/events':
+  "/events":
     get:
-      tags: 
-        - 'events'
-      
-      summary: 'get specific events of a user, based on user email'
+      tags:
+        - "events"
+
+      summary: "get specific events of a user, based on user email"
       parameters:
         - in: header
           name: authorization
@@ -102,24 +102,24 @@ paths:
             type: Bearer Token
       responses:
         200:
-          description: 'OK'
+          description: "OK"
         400:
-          description: 'Bad data input'
+          description: "Bad data input"
         401:
-          description: 'Token not valid'
+          description: "Token not valid"
         500:
-          description: 'Something went wrong'
+          description: "Something went wrong"
 
     post:
       tags:
-        - 'events'
+        - "events"
 
-      summary: 'create events as a valid user'
+      summary: "create events as a valid user"
       requestBody:
         content:
           application/json:
           shema:
-            $ref: './models/events'
+            $ref: "./models/events"
       parameters:
         - title: eventTitle
           in: body
@@ -175,20 +175,20 @@ paths:
             type: Bearer Token
       responses:
         200:
-          description: 'OK'
+          description: "OK"
         400:
-          description: 'Bad data input'
+          description: "Bad data input"
         401:
-          description: 'Token not valid'
+          description: "Token not valid"
         500:
-          description: 'Something went wrong'
+          description: "Something went wrong"
 
-  '/events/{UserID}':
+  "/events/{UserID}":
     get:
-      tags: 
-        - 'events'
-      
-      summary: 'get a specific events by its ID'
+      tags:
+        - "events"
+
+      summary: "get a specific events by its ID"
       parameters:
         - in: path
           name: UserID
@@ -202,24 +202,24 @@ paths:
             type: Bearer Token
       responses:
         200:
-          description: 'OK'
+          description: "OK"
         400:
-          description: 'Bad data input'
+          description: "Bad data input"
         401:
-          description: 'Token not valid'
+          description: "Token not valid"
         500:
-          description: 'Something went wrong'
+          description: "Something went wrong"
 
     put:
       tags:
-        - 'events'
+        - "events"
 
-      summary: 'update events as a valid user'
+      summary: "update events as a valid user"
       requestBody:
         content:
           application/json:
           shema:
-            $ref: './models/events'
+            $ref: "./models/events"
       parameters:
         - in: path
           name: UserID
@@ -281,19 +281,19 @@ paths:
             type: Bearer Token
       responses:
         200:
-          description: 'OK'
+          description: "OK"
         400:
-          description: 'Bad data input'
+          description: "Bad data input"
         401:
-          description: 'Token not valid'
+          description: "Token not valid"
         500:
-          description: 'Something went wrong'
+          description: "Something went wrong"
 
     delete:
-      tags: 
-        - 'events'
-      
-      summary: 'delete an events by its ID'
+      tags:
+        - "events"
+
+      summary: "delete an events by its ID"
       parameters:
         - in: path
           name: UserID
@@ -307,26 +307,26 @@ paths:
             type: Bearer Token
       responses:
         200:
-          description: 'OK'
+          description: "OK"
         400:
-          description: 'Bad data input'
+          description: "Bad data input"
         401:
-          description: 'Token not valid'
+          description: "Token not valid"
         500:
-          description: 'Something went wrong'
+          description: "Something went wrong"
 
-  '/categories':
+  "/categories":
     get:
-      tags: 
-        - 'categories'
-      
-      summary: 'get all categories from db'
+      tags:
+        - "categories"
+
+      summary: "get all categories from db"
       responses:
         200:
-          description: 'OK'
+          description: "OK"
         400:
-          description: 'Bad data input'
+          description: "Bad data input"
         401:
-          description: 'Token not valid'
+          description: "Token not valid"
         500:
-          description: 'Something went wrong'
+          description: "Something went wrong"

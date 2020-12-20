@@ -3,12 +3,14 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "test": "mocha --recursive --exit"
   },
   "dependencies": {
     "@types/node": "^14.14.11",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.18.3",
+    "chai": "^4.2.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^8.2.0",
@@ -17,13 +19,16 @@
     "gulp": "^4.0.2",
     "http-errors": "~1.6.3",
     "jsonwebtoken": "^8.5.1",
+    "mocha": "^8.2.1",
+    "mockgoose": "^8.0.4",
     "mongodb": "^3.6.3",
     "mongoose": "^5.10.14",
     "morgan": "~1.9.1",
     "node-rsa": "^1.1.1",
     "nodejs": "^0.0.0",
     "path": "^0.12.7",
-    "pg": "^8.5.1"
+    "pg": "^8.5.1",
+    "supertest": "^6.0.1"
   },
   "devDependencies": {
     "eslint": "^7.13.0",
