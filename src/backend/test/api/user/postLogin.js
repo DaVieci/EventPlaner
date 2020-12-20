@@ -28,7 +28,7 @@ describe('POST /users/login', () => {
             .catch(err => done(err));
     })
 
-    it('OK:login test with wrong password' , (done) => {
+    it('OK:login test with wrong password', (done) => {
         request(app).post('/users/login')
             .send({ email: 'test@mail.com', password: '12345' })
             .then((res) => {
