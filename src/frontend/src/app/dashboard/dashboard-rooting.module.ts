@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { Routes, RouterModule } from '@angular/router';
 import { EventsComponent } from './events.component';
-import { AddEventComponent } from './add-event/add-event.component';
+import { AddEventComponent } from './add-event.component';
 
 
 const routes: Routes = [
