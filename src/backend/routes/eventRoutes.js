@@ -29,11 +29,11 @@ router.get('/events/:id', authenticateToken, (req, res) => {
 
 router.put('/events/:id', authenticateToken, (req, res) => {
   const id = req.params.id;
-  Event.update({_id: id})
+  Event.updateOne({_id: id}, req.body)
     .then(result => {
       res.send('saved to DB');
     }).catch(err => console.log(err));
-})
+});
   
 router.delete('/events/:id', authenticateToken, (req, res) => {
     const id = req.params.id;

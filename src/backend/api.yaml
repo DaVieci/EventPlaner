@@ -68,6 +68,27 @@ paths:
         500:
           description: 'Something went wrong'
 
+  '/user/logout':
+    post:
+      tags:
+        - 'user'
+
+      summary: 'Logout from user'
+      requestBody:
+        content:
+          application/json:
+          shema:
+            $ref: './models/users'
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad data input'
+        401:
+          description: 'Token not valid'
+        500:
+          description: 'Something went wrong'
+
   '/events':
     get:
       tags: 
@@ -152,6 +173,154 @@ paths:
           name: authorization
           schema:
             type: Bearer Token
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad data input'
+        401:
+          description: 'Token not valid'
+        500:
+          description: 'Something went wrong'
+
+  '/events/{UserID}':
+    get:
+      tags: 
+        - 'events'
+      
+      summary: 'get a specific events by its ID'
+      parameters:
+        - in: path
+          name: UserID
+          description: UserID
+          required: true
+          schema:
+            type: string
+        - in: header
+          name: authorization
+          schema:
+            type: Bearer Token
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad data input'
+        401:
+          description: 'Token not valid'
+        500:
+          description: 'Something went wrong'
+
+    put:
+      tags:
+        - 'events'
+
+      summary: 'update events as a valid user'
+      requestBody:
+        content:
+          application/json:
+          shema:
+            $ref: './models/events'
+      parameters:
+        - in: path
+          name: UserID
+          description: UserID
+          required: true
+          schema:
+            type: string
+        - title: eventTitle
+          in: body
+          description: event title
+          required: true
+          schema:
+            type: String
+        - start: startDateTime
+          in: body
+          description: start date and time of event
+          required: true
+          schema:
+            type: String
+        - end: endDateTime
+          in: body
+          description: end date and time of event
+          required: true
+          schema:
+            type: String
+        - body: eventDescription
+          in: body
+          description: detailed description of event
+          required: false
+          schema:
+            type: String
+        - image: base64Image
+          in: body
+          description: base64 image for orientation
+          required: false
+          schema:
+            type: String
+        - category: eventCategory
+          in: body
+          description: category of event for filter
+          required: false
+          schema:
+            type: String
+        - user: userEmail
+          in: body
+          description: owner of the event
+          required: true
+          schema:
+            type: String
+        - status: planningStatus
+          in: body
+          description: planning status of event
+          required: false
+          schema:
+            type: String
+        - in: header
+          name: authorization
+          schema:
+            type: Bearer Token
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad data input'
+        401:
+          description: 'Token not valid'
+        500:
+          description: 'Something went wrong'
+
+    delete:
+      tags: 
+        - 'events'
+      
+      summary: 'delete an events by its ID'
+      parameters:
+        - in: path
+          name: UserID
+          description: UserID
+          required: true
+          schema:
+            type: string
+        - in: header
+          name: authorization
+          schema:
+            type: Bearer Token
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad data input'
+        401:
+          description: 'Token not valid'
+        500:
+          description: 'Something went wrong'
+
+  '/categories':
+    get:
+      tags: 
+        - 'categories'
+      
+      summary: 'get all categories from db'
       responses:
         200:
           description: 'OK'
