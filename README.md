@@ -8,6 +8,7 @@ Bela Föhrenbacher (1794796) and Thanh Viet Dang(7035821)
 |   Command |   Description |
 |   :------ |   :---------: |
 |   `gulp`  |   Installs modules for frontend and backend and starts the server |
+|   `npm run test`  |   Run this command in backend folder for a few unit tests |
 
 ## Features
 * Sign-up as new user oder login as existing user (e-mail validation check)

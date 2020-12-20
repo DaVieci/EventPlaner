@@ -17,9 +17,11 @@ describe('POST /users/sign-up', () => {
             .catch(err => done(err));
     })
 
+    var userID = getTime();
+
     it('OK: signup test with test@mail.de', (done) => {
         request(app).post('/users/sign-up')
-            .send({ fullName: 'Unittest User', email: 'test@unit.de', password: 'Unittest', confirmPassword: 'Unittest' })
+            .send({ fullName: 'Unittest User', email: 'test' + userID + '@unit.de', password: 'Unittest', confirmPassword: 'Unittest' })
             .then((res) => {
                 const body = res.body;
                 expect(body).to.contain.property('token');
