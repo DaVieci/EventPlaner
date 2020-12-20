@@ -6,8 +6,8 @@ import { AuthRootingModule } from './auth-rooting.module';
 import { LoginComponent } from './login.component';
 import { SignupComponent } from './signup.component';
 
-import { NbAuthModule, NbPasswordAuthStrategy, NbAuthJWTToken } from '@nebular/auth';
-import { NbEvaIconsModule } from '@nebular/eva-icons';
+import { NbAuthModule } from '@nebular/auth';
+
 import {
   NbLayoutModule,
   NbButtonModule,
@@ -33,16 +33,15 @@ import { RouterModule } from '@angular/router';
     AuthRootingModule,
     NbLayoutModule,
     NbButtonModule,
-    NbFormFieldModule, 
-    NbInputModule, 
-    NbCardModule, 
+    NbFormFieldModule,
+    NbInputModule,
+    NbCardModule,
     NbIconModule,
     NbUserModule,
     FormsModule,
     RouterModule,
     NbAlertModule,
     NbCheckboxModule,
-    
     NbAuthModule
   ],
   providers: []

@@ -11,11 +11,11 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AuthGuard } from './services/auth-guard.service';
 
-import { 
+import {
   NbDatepickerModule,
   NbThemeModule
 } from '@nebular/theme';
-import { 
+import {
   NbSidebarModule,
   NbMenuModule,
   NbLayoutModule,
@@ -48,9 +48,9 @@ import { NbPasswordAuthStrategy, NbAuthModule, NbAuthJWTToken } from '@nebular/a
     NbSidebarModule.forRoot(),
     NbMenuModule.forRoot(),
     NbButtonModule,
-    NbFormFieldModule, 
-    NbInputModule, 
-    NbCardModule, 
+    NbFormFieldModule,
+    NbInputModule,
+    NbCardModule,
     NbIconModule,
     NbUserModule,
     NbEvaIconsModule,
@@ -70,7 +70,7 @@ import { NbPasswordAuthStrategy, NbAuthModule, NbAuthJWTToken } from '@nebular/a
             method: 'post',
             redirect: {
               success: '/events',
-              failure: null, 
+              failure: null,
             }
           },
           register: {
@@ -78,7 +78,7 @@ import { NbPasswordAuthStrategy, NbAuthModule, NbAuthJWTToken } from '@nebular/a
             method: 'post',
             redirect: {
               success: '/',
-              failure: null,  
+              failure: null,
             }
           },
           logout: {
@@ -96,7 +96,7 @@ import { NbPasswordAuthStrategy, NbAuthModule, NbAuthJWTToken } from '@nebular/a
         }),
       ],
       forms: {},
-    }) 
+    })
   ],
   providers: [
     AuthGuard

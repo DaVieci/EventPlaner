@@ -19,29 +19,29 @@ export class EventsComponent implements OnInit {
   max: Date;
 
   events: {
-    _id: String,
-    title: String,
-    start_date: String,
-    start_time: String,
-    end_date: String,
-    end_time: String,
-    body: String,
-    image: String,
-    category: String,
-    user: String,
-    status: String
+    _id: string,
+    title: string,
+    start_date: string,
+    start_time: string,
+    end_date: string,
+    end_time: string,
+    body: string,
+    image: string,
+    category: string,
+    user: string,
+    status: string
   };
 
   categories: {
-    _id: String,
-    type: String
-  }
-  
-  sel_cats: string;
+    _id: string,
+    type: string
+  };
+
+  selCats: string;
 
   OneDayInMillisec = 86400000;
 
-  img_mime: string;
+  imgMime: string;
 
   /**
    * Initialize the route service to navigate to other sites and the authentication service to get the user token which holds their full name and email address.
@@ -54,26 +54,26 @@ export class EventsComponent implements OnInit {
     private sanitizer: DomSanitizer
   ) {
     this.authService.onTokenChange()
-        .subscribe((token: NbAuthJWTToken) => {
-          if (token.isValid()) {
-            this.user_token = token.toString();
-            this.bearer_token = 'Bearer '+this.user_token;
-          }
-        });
-    }
-  
+      .subscribe((token: NbAuthJWTToken) => {
+        if (token.isValid()) {
+          this.user_token = token.toString();
+          this.bearer_token = 'Bearer ' + this.user_token;
+        }
+      });
+  }
+
   /**
    * Calls `getEvents()` and `getCategories()` to get categories and all events from user and stores them in storages on page transition.
    * The apis will only be called afterwards if one event has got added, editted or deleted. 
    */
   ngOnInit(): void {
-    if(!this.refreshPageOnTransition()) {
-      if(!(sessionStorage.getItem("AddEditDeleteCallOnEvent")==="false")) {
-        sessionStorage.setItem("AddEditDeleteCallOnEvent", "false");
+    if (!this.refreshPageOnTransition()) {
+      if (!(sessionStorage.getItem('AddEditDeleteCallOnEvent') === 'false')) {
+        sessionStorage.setItem('AddEditDeleteCallOnEvent', 'false');
         this.getEvents();
         this.getCategories();
       }
-      setTimeout(()=>{
+      setTimeout(() => {
         this.loadEventsAndCategories();
       }, 1000);
     }
@@ -84,8 +84,8 @@ export class EventsComponent implements OnInit {
    * @returns `true` when coming from login page, `false` when page is getting refreshed for the next time
    */
   refreshPageOnTransition(): boolean {
-    if (!(sessionStorage.getItem("pageTransition")==="false")) {
-      sessionStorage.setItem("pageTransition", "false");
+    if (!(sessionStorage.getItem('pageTransition') === 'false')) {
+      sessionStorage.setItem('pageTransition', 'false');
       window.location.reload();
       return true;
     } else {
@@ -98,10 +98,10 @@ export class EventsComponent implements OnInit {
    * Calls the `filter_events(f: NgForm)` function by dynamically clicking on the filter button of the HTML file.
    */
   loadEventsAndCategories(): void {
-    var session_cats = sessionStorage.getItem("CategoriesJson");
-    var json_cats = JSON.parse(session_cats);
-    this.categories = json_cats;
-    (<HTMLButtonElement>document.getElementById("filter_button")).click();
+    const sessionCats = sessionStorage.getItem('CategoriesJson');
+    const jsonCats = JSON.parse(sessionCats);
+    this.categories = jsonCats;
+    (<HTMLButtonElement>document.getElementById('filter_button')).click();
   }
 
   /**
@@ -109,17 +109,17 @@ export class EventsComponent implements OnInit {
    * If successful, it will return all events form the user. Then they will be stored as a json string and the image url will be set.
    */
   getEvents(): void {
-    var requestOptions = {
+    const requestOptions = {
       method: 'GET',
       headers: {
         Authorization: this.bearer_token
       }
     };
-    fetch("/api/events", requestOptions)
+    fetch('/api/events', requestOptions)
       .then(response => response.text())
       .then(result => {
-        var json_event = JSON.parse(result);
-        sessionStorage.setItem("EventsJson", JSON.stringify(json_event));
+        var jsonEvent = JSON.parse(result);
+        sessionStorage.setItem('EventsJson', JSON.stringify(jsonEvent));
       })
       .catch(error => {
         //ggf http status 403 & 401 verarbeiten
@@ -132,35 +132,35 @@ export class EventsComponent implements OnInit {
    * If successful, it will return all categories. Then they will be stored as a json string. 
    */
   getCategories(): void {
-    var requestOptions = {
+    const requestOptions = {
       method: 'GET'
     };
-    fetch("/api/categories", requestOptions)
-    .then(response => response.text())
-    .then(result => {
-      var json_cat = JSON.parse(result);
-      sessionStorage.setItem("CategoriesJson", JSON.stringify(json_cat));
-    })
-    .catch(error => {
-      //ggf http status 403 & 401 verarbeiten
-      console.log('error', error);
-    });
+    fetch('/api/categories', requestOptions)
+      .then(response => response.text())
+      .then(result => {
+        const jsonCat = JSON.parse(result);
+        sessionStorage.setItem('CategoriesJson', JSON.stringify(jsonCat));
+      })
+      .catch(error => {
+        //ggf http status 403 & 401 verarbeiten
+        console.log('error', error);
+      });
   }
 
   /**
    * Converts the given base64 img code from the json file into a real picture and returns the url.
    * If no image is set in the specific event, it will show a sample image from the assets folder.
-   * @param img_code base64 code given from the json
+   * @param imgCode base64 code given from the json
    * @returns url to the newly generated picture
    */
-  convertBase64ToImageURL(img_code: string): any {
-    if (img_code) {
-      var image_blob = this.convertDataUrlToBlob(img_code);
+  convertBase64ToImageURL(imgCode: string): any {
+    if (imgCode) {
+      const image_blob = this.convertDataUrlToBlob(imgCode);
       const objectURL = URL.createObjectURL(image_blob);
       const url = this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
       return url;
     } else {
-      return "./../../assets/event_pics/festival1.jpg";
+      return './../../assets/event_pics/festival1.jpg';
     }
   }
 
@@ -173,15 +173,15 @@ export class EventsComponent implements OnInit {
     const arr = url.split(',');
     const mime = arr[0].match(/:(.*?);/)[1];
     console.log(mime);
-    this.img_mime = mime;
+    this.imgMime = mime;
     const bstr = atob(arr[1]);
     let n = bstr.length;
     const u8arr = new Uint8Array(n);
     while (n--) {
       u8arr[n] = bstr.charCodeAt(n);
     }
-    return new Blob([u8arr], {type: mime});
-}
+    return new Blob([u8arr], { type: mime });
+  }
 
   /**
    * Takes the data inputs of date und category to apply filtering on the json file that contains all events.
@@ -189,7 +189,7 @@ export class EventsComponent implements OnInit {
    */
   filter_events(f: NgForm): void {
     delete this.events;
-    var session_events = sessionStorage.getItem("EventsJson");
+    var session_events = sessionStorage.getItem('EventsJson');
 
     var s_date_iso;
     var e_date_iso;
@@ -198,7 +198,7 @@ export class EventsComponent implements OnInit {
     var filtered_events;
 
     var date_range = {};
-    if (!(f.value.date_range===null)) {
+    if (!(f.value.date_range === null)) {
       date_range = f.value.date_range;
       if (Object.keys(f.value.date_range).length) {
         s_date_iso = new Date(f.value.date_range.start);
@@ -213,23 +213,23 @@ export class EventsComponent implements OnInit {
     }
 
     var cat_arr = [];
-    if (!(f.value.cats==="")) cat_arr = f.value.cats;
+    if (!(f.value.cats === '')) cat_arr = f.value.cats;
 
     if (!Object.keys(date_range).length && !Object.keys(cat_arr).length) {
       filtered_events = JSON.parse(session_events);
     } else if (Object.keys(date_range).length && !Object.keys(cat_arr).length) {
       filtered_events = JSON.parse(session_events)
-        .filter(({start_date}) => this.checkDateBetweenStartAndEnd(start_date,s_day_msec,e_day_msec));
+        .filter(({ start_date }) => this.checkDateBetweenStartAndEnd(start_date, s_day_msec, e_day_msec));
     } else if (!Object.keys(date_range).length && Object.keys(cat_arr).length) {
       filtered_events = JSON.parse(session_events)
-        .filter(({category}) => cat_arr.includes(category));
+        .filter(({ category }) => cat_arr.includes(category));
     } else if (Object.keys(date_range).length && Object.keys(cat_arr).length) {
       filtered_events = JSON.parse(session_events)
-        .filter(({start_date, category}) => this.checkDateBetweenStartAndEnd(start_date,s_day_msec,e_day_msec) && cat_arr.includes(category));
+        .filter(({ start_date, category }) => this.checkDateBetweenStartAndEnd(start_date, s_day_msec, e_day_msec) && cat_arr.includes(category));
     } else {
-      console.log("FATAL ERROR! This code part should have never been reached. Have a look at the following:");
-      console.log("Date Picker: "+f.value.date_range);
-      console.log("Categories Select: "+f.value.cats);
+      console.log('FATAL ERROR! This code part should have never been reached. Have a look at the following:');
+      console.log('Date Picker: ' + f.value.date_range);
+      console.log('Categories Select: ' + f.value.cats);
     }
     this.events = filtered_events.sort();
   }
@@ -243,11 +243,11 @@ export class EventsComponent implements OnInit {
    */
   checkDateBetweenStartAndEnd(date: string, start: number, end: number): boolean {
     var json_date = new Date(date);
-    if ((start<=json_date.getTime()) && (json_date.getTime()<=end)) {
+    if ((start <= json_date.getTime()) && (json_date.getTime() <= end)) {
       return true;
     } else {
       return false;
-    } 
+    }
   }
 
   /**
@@ -266,7 +266,7 @@ export class EventsComponent implements OnInit {
    * @param event_id id of the event
    */
   delete_event(event_id: String): void {
-    var userselection = confirm("Are you sure you want to delete this event?");
+    var userselection = confirm('Are you sure you want to delete this event?');
     if (userselection === true) {
       var requestOptions = {
         method: 'DELETE',
@@ -278,7 +278,7 @@ export class EventsComponent implements OnInit {
         .then(result => {
           console.log(result);
           delete this.events;
-          sessionStorage.setItem("AddEditDeleteCallOnEvent", "true");
+          sessionStorage.setItem('AddEditDeleteCallOnEvent', 'true');
           this.ngOnInit();
         })
         .catch(err => console.log(err));

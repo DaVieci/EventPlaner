@@ -14,38 +14,38 @@ import { NbAuthJWTToken, NbAuthService } from '@nebular/auth';
 export class AddEventComponent implements OnInit {
 
   categories: {
-    type: String
+    type: string
   };
 
   user = {
     email: String,
     fullName: String
   };
-  private user_token: String;
-  private bearer_token: any;
+  private userToken: string;
+  private bearerToken: any;
 
   id_event: string;
 
-  title_value: string;
-  sdate_value: Date;
-  stime_value: Date;
-  edate_value: Date;
-  edate_min: Date;
-  etime_value: Date;
-  etime_min: Date;
-  body_value: string;
-  sel_cat: string;
-  sel_stat: string;
+  titleValue: string;
+  sdateValue: Date;
+  stimeValue: Date;
+  edateValue: Date;
+  edateMin: Date;
+  etimeValue: Date;
+  etimeMin: Date;
+  bodyValue: string;
+  selCat: string;
+  selStat: string;
 
-  image_from_json: string;
+  imageFromJson: string;
   imageLink: string;
-  imageURL: string;
+  imageUrl: string;
 
-  dummy_button: boolean;
-  canv_visible: boolean;
-  delimg_button: boolean;
-  error_msg: boolean;
-  success_msg: boolean;
+  dummyButton: boolean;
+  canvVisible: boolean;
+  delImgButton: boolean;
+  errorMsg: boolean;
+  successMsg: boolean;
 
   /**
    * Sets up the services and user token.
@@ -60,8 +60,8 @@ export class AddEventComponent implements OnInit {
       .subscribe((token: NbAuthJWTToken) => {
         if (token.isValid()) {
           this.user = token.getPayload();
-          this.user_token = token.toString();
-          this.bearer_token = 'Bearer '+this.user_token;
+          this.userToken = token.toString();
+          this.bearerToken = 'Bearer ' + this.userToken;
         }
       });
   }
@@ -69,35 +69,36 @@ export class AddEventComponent implements OnInit {
   /**
    * When on page load, the canvas, buttons and alert boxes will be disabled.
    * Loads categories from the storage.
-   * Gets the event id from the url. If an ID exists, it will load all information from the given event id and puts them into the right fields.
+   * Gets the event id from the url. If an ID exists, 
+   * it will load all information from the given event id and puts them into the right fields.
    * If an event has got created, it will clear all inputs and show a success alert.
    * If an event has got editted, it will only an success alert.
    */
   ngOnInit(): void {
-    this.canv_visible = false;
-    this.delimg_button = false;
-    this.error_msg = false;
-    this.success_msg = false;
-    this.dummy_button = true;
+    this.canvVisible = false;
+    this.delImgButton = false;
+    this.errorMsg = false;
+    this.successMsg = false;
+    this.dummyButton = true;
     this.loadCategoriesFromStorage();
     this.id_event = this.acRoute.snapshot.paramMap.get('id');
     if (this.id_event) {
-      if (sessionStorage.getItem("EventEditted")==="true") {
-        sessionStorage.removeItem("EventEditted");
-        this.success_msg = true;
+      if (sessionStorage.getItem('EventEditted') === 'true') {
+        sessionStorage.removeItem('EventEditted');
+        this.successMsg = true;
       } else {
-        console.log(this.id_event); 
+        console.log(this.id_event);
         this.getEventById();
-        setTimeout(()=>{
+        setTimeout(() => {
           this.loadEventInInputs();
         }, 1000);
       }
-    } else if (sessionStorage.getItem("EventCreated")==="true") {
-      sessionStorage.removeItem("EventCreated");
+    } else if (sessionStorage.getItem('EventCreated') === 'true') {
+      sessionStorage.removeItem('EventCreated');
       this.clearAllInputs();
-      this.success_msg = true;
+      this.successMsg = true;
     }
-    setTimeout(()=>{
+    setTimeout(() => {
       (<HTMLButtonElement>document.getElementById("dummy_button")).click();
     }, 1000);
   }
@@ -106,20 +107,20 @@ export class AddEventComponent implements OnInit {
    * Loads categories from storage and sets them into the select field.
    */
   loadCategoriesFromStorage(): void {
-    console.log("load cats");
-    var session_cats = sessionStorage.getItem("CategoriesJson");
-    var json_cats = JSON.parse(session_cats);
+    console.log('load cats');
+    const session_cats = sessionStorage.getItem("CategoriesJson");
+    const json_cats = JSON.parse(session_cats);
     this.categories = json_cats;
   }
-  
+
   /**
    * Loads the base64 image code from the json and creates an image.
    * @param b64 base64 code of the img
    * @returns url to the image
    */
   createImageUrl(b64: string): string {
-    var image_blob = this.convertDataUrlToBlob(b64);
-    const objectURL = URL.createObjectURL(image_blob);
+    const imageBlob = this.convertDataUrlToBlob(b64);
+    const objectURL = URL.createObjectURL(imageBlob);
     return objectURL;
   }
 
@@ -128,8 +129,8 @@ export class AddEventComponent implements OnInit {
    * @param b64_code base64 code
    * @returns blob
    */
-  convertDataUrlToBlob(b64_code: string): Blob {
-    const arr = b64_code.split(',');
+  convertDataUrlToBlob(bCode: string): Blob {
+    const arr = bCode.split(',');
     const mime = arr[0].match(/:(.*?);/)[1];
     const bstr = atob(arr[1]);
     let n = bstr.length;
@@ -137,25 +138,25 @@ export class AddEventComponent implements OnInit {
     while (n--) {
       u8arr[n] = bstr.charCodeAt(n);
     }
-    return new Blob([u8arr], {type: mime});
-}
+    return new Blob([u8arr], { type: mime });
+  }
 
   /**
    * Sets the options, the event id and the bearer token for the get api and calls it.
    * If successful, it will return the whole event from the given id. The event will be stored as a json string.
    */
   getEventById(): void {
-    var requestOptions = {
+    const requestOptions = {
       method: 'GET',
       headers: {
-        Authorization: this.bearer_token
+        Authorization: this.bearerToken
       }
     };
     fetch(`/api/events/${this.id_event}`, requestOptions)
-      .then(response => response.text()) 
+      .then(response => response.text())
       .then(result => {
-        var json_event = JSON.parse(result);
-        sessionStorage.setItem("EditEventJson", JSON.stringify(json_event));
+        const json_event = JSON.parse(result);
+        sessionStorage.setItem('EditEventJson', JSON.stringify(json_event));
       })
       .catch(err => console.log(err));
   }
@@ -165,35 +166,35 @@ export class AddEventComponent implements OnInit {
    * If an image is given, it will create an url out of the base64 code and display the image on the canvas. 
    */
   loadEventInInputs(): void {
-    var session_event = sessionStorage.getItem("EditEventJson");
-    var json_event = JSON.parse(session_event);
-    console.log(json_event);
-    this.title_value = json_event.title;
-    this.sdate_value = json_event.start_date;
-    this.stime_value = json_event.start_time;
-    this.edate_value = json_event.end_date;
-    this.etime_value = json_event.end_time;
-    this.body_value = json_event.body;
-    this.image_from_json = json_event.image;
-    if (this.image_from_json) {
-      this.imageLink = this.createImageUrl(this.image_from_json);
+    const sessionEvent = sessionStorage.getItem('EditEventJson');
+    const jsonEvent = JSON.parse(sessionEvent);
+    console.log(jsonEvent);
+    this.titleValue = jsonEvent.title;
+    this.sdateValue = jsonEvent.start_date;
+    this.stimeValue = jsonEvent.start_time;
+    this.edateValue = jsonEvent.end_date;
+    this.etimeValue = jsonEvent.end_time;
+    this.bodyValue = jsonEvent.body;
+    this.imageFromJson = jsonEvent.image;
+    if (this.imageFromJson) {
+      this.imageLink = this.createImageUrl(this.imageFromJson);
       this.showImageOnCanvas();
     }
-    this.sel_cat = json_event.category;
-    this.sel_stat = json_event.status;
+    this.selCat = jsonEvent.category;
+    this.selStat = jsonEvent.status;
   }
 
   /**
    * Clears all input fields.
    */
   clearAllInputs(): void {
-    this.title_value = "";
-    this.sdate_value = null;
-    this.stime_value = null;
-    this.edate_value = null;
-    this.etime_value = null;
-    this.body_value = "";
-    (<HTMLInputElement>document.getElementById("inpimg")).value = null;
+    this.titleValue = "";
+    this.sdateValue = null;
+    this.stimeValue = null;
+    this.edateValue = null;
+    this.etimeValue = null;
+    this.bodyValue = "";
+    (<HTMLInputElement>document.getElementById('inpimg')).value = null;
   }
 
   /**
@@ -202,10 +203,10 @@ export class AddEventComponent implements OnInit {
    * @param f json which holds all field values
    */
   setFormValueToInputFields(f: NgForm): void {
-    if (!(f.value.title==="")) this.title_value = f.value.title;
-    if (!(f.value.body==="")) this.body_value = f.value.body;
-    if (!(f.value.cat==="")) this.sel_cat = f.value.cat;
-    if (!(f.value.stat==="")) this.sel_stat = f.value.stat;
+    if (!(f.value.title === '')) { this.titleValue = f.value.title; }
+    if (!(f.value.body === '')) { this.bodyValue = f.value.body; }
+    if (!(f.value.cat === '')) { this.selCat = f.value.cat; }
+    if (!(f.value.stat === '')) { this.selStat = f.value.stat; }
   }
 
   /**
@@ -214,10 +215,10 @@ export class AddEventComponent implements OnInit {
    * @param f json which holds all field values
    */
   setFormValueToDateFields(f: NgForm): void {
-    if (!(f.value.start_date==="")) this.sdate_value = f.value.start_date;
-    if (!(f.value.start_time==="")) this.stime_value = f.value.start_time;
-    if (!(f.value.end_date==="")) this.edate_value = f.value.end_date;
-    if (!(f.value.end_time==="")) this.etime_value = f.value.end_time;
+    if (!(f.value.start_date === '')) { this.sdateValue = f.value.start_date; }
+    if (!(f.value.start_time === '')) { this.stimeValue = f.value.start_time; }
+    if (!(f.value.end_date === '')) { this.edateValue = f.value.end_date; }
+    if (!(f.value.end_time === '')) { this.etimeValue = f.value.end_time; }
   }
 
   /**
@@ -226,29 +227,29 @@ export class AddEventComponent implements OnInit {
    * @param f json which holds all field values
    */
   uploadEvent(f: NgForm): void {
-    if (this.image_from_json) {
-      if (!(this.imageURL)) this.imageURL = this.image_from_json;
+    if (this.imageFromJson) {
+      if (!(this.imageUrl)) this.imageUrl = this.imageFromJson;
     }
     this.setFormValueToInputFields(f);
     this.setFormValueToDateFields(f);
-    var sd="", st="", ed="", et="";
-    if (this.sdate_value) sd = this.sdate_value.toString();
-    if (this.stime_value) st = this.stime_value.toString();
-    if (this.edate_value) ed = this.edate_value.toString();
-    if (this.etime_value) et = this.etime_value.toString();
-    if (!(this.title_value==="") && !(sd==="") && !(st==="") && !(ed==="") && !(et==="")) {
-      this.error_msg = false;
+    var sd = '', st = '', ed = '', et = '';
+    if (this.sdateValue) sd = this.sdateValue.toString();
+    if (this.stimeValue) st = this.stimeValue.toString();
+    if (this.edateValue) ed = this.edateValue.toString();
+    if (this.etimeValue) et = this.etimeValue.toString();
+    if (!(this.titleValue === '') && !(sd === '') && !(st === '') && !(ed === '') && !(et === '')) {
+      this.errorMsg = false;
       const json_events = {
-        title: this.title_value,
-        start_date: this.sdate_value,
-        start_time: this.stime_value,
-        end_date: this.edate_value,
-        end_time: this.etime_value,
-        body: this.body_value,
-        image: this.imageURL, 
-        category: this.sel_cat,
+        title: this.titleValue,
+        start_date: this.sdateValue,
+        start_time: this.stimeValue,
+        end_date: this.edateValue,
+        end_time: this.etimeValue,
+        body: this.bodyValue,
+        image: this.imageUrl,
+        category: this.selCat,
         user: this.user.email,
-        status: this.sel_stat
+        status: this.selStat
       };
       const str_events = JSON.stringify(json_events);
       let push_method;
@@ -263,7 +264,7 @@ export class AddEventComponent implements OnInit {
       const requestOptions = {
         method: push_method,
         headers: {
-          Authorization: this.bearer_token,
+          Authorization: this.bearerToken,
           'Content-Type': 'application/json;charset=utf-8'
         },
         body: str_events
@@ -272,19 +273,18 @@ export class AddEventComponent implements OnInit {
         .then(response => response.text())
         .then(result => {
           if (this.id_event) {
-            sessionStorage.setItem("EventEditted", "true");
+            sessionStorage.setItem('EventEditted', 'true');
           } else {
-            sessionStorage.setItem("EventCreated", "true");
+            sessionStorage.setItem('EventCreated', 'true');
           }
-          sessionStorage.setItem("AddEditDeleteCallOnEvent", "true");
+          sessionStorage.setItem('AddEditDeleteCallOnEvent', 'true');
           this.ngOnInit();
         })
         .catch(error => {
-          //ggf http status 403 & 401 verarbeiten
           console.log('error', error);
         });
     } else {
-      this.error_msg = true;
+      this.errorMsg = true;
     }
   }
 
@@ -295,13 +295,13 @@ export class AddEventComponent implements OnInit {
    */
   setDateMinimums(f: NgForm): void {
     this.setFormValueToDateFields(f);
-    this.edate_min = this.sdate_value;
-    let e_d = new Date(this.edate_value);
-    let s_d = new Date(this.sdate_value);
-    if (e_d.getTime()<=s_d.getTime()) {
-      this.edate_value = this.sdate_value;
-      this.etime_value = this.stime_value;
-    } 
+    this.edateMin = this.sdateValue;
+    let eD = new Date(this.edateValue);
+    let sD = new Date(this.sdateValue);
+    if (eD.getTime() <= sD.getTime()) {
+      this.edateValue = this.sdateValue;
+      this.etimeValue = this.stimeValue;
+    }
   }
 
   /**
@@ -311,14 +311,14 @@ export class AddEventComponent implements OnInit {
    */
   setTimeMinimums(f: NgForm, inputT: String): void {
     this.setFormValueToDateFields(f);
-    let e_d = new Date(this.edate_value);
-    let s_d = new Date(this.sdate_value);
-    if (e_d.getTime()===s_d.getTime()) {
+    let e_d = new Date(this.edateValue);
+    let s_d = new Date(this.sdateValue);
+    if (e_d.getTime() === s_d.getTime()) {
       if (f.value.end_time < f.value.start_time) {
-        if (inputT==='s_t') {
-          this.etime_value = f.value.start_time;
-        } else if (inputT==='e_t') {
-          this.stime_value = f.value.end_time;
+        if (inputT === 's_t') {
+          this.etimeValue = f.value.start_time;
+        } else if (inputT === 'e_t') {
+          this.stimeValue = f.value.end_time;
         }
       }
     }
@@ -329,29 +329,29 @@ export class AddEventComponent implements OnInit {
    * If it's a newly uploaded picture, it will store it's base64 code in a variable of the storage.
    */
   showImageOnCanvas(): void {
-    this.canv_visible = true;
-    this.delimg_button = true;
-    var image = <HTMLInputElement>document.getElementById("inpimg");
+    this.canvVisible = true;
+    this.delImgButton = true;
+    var image = <HTMLInputElement>document.getElementById('inpimg');
     var background = new Image();
     var imglink = this.imageLink;
-    if(imglink){
+    if (imglink) {
       background.src = imglink;
-    }else {
+    } else {
       background.src = URL.createObjectURL(image.files[0]);
     }
     background.onload = function () {
-      var canvas = <HTMLCanvasElement>document.getElementById("canvimg");
-      const context = canvas.getContext("2d");
+      var canvas = <HTMLCanvasElement>document.getElementById('canvimg');
+      const context = canvas.getContext('2d');
       canvas.width = background.width;
       canvas.height = background.height;
       context.drawImage(background, 0, 0);
-      if(!(imglink)) {
-        var imgurl = canvas.toDataURL('image/jpeg');
-        sessionStorage.setItem("ImageBase64", imgurl);
+      if (!(imglink)) {
+        const imgurl = canvas.toDataURL('image/jpeg');
+        sessionStorage.setItem('ImageBase64', imgurl);
       }
     }
-    this.imageURL = sessionStorage.getItem("ImageBase64");
-    sessionStorage.removeItem("ImageBase64");
+    this.imageUrl = sessionStorage.getItem('ImageBase64');
+    sessionStorage.removeItem('ImageBase64');
   }
 
   /**
@@ -359,17 +359,17 @@ export class AddEventComponent implements OnInit {
    * Clears canvas and variables.
    */
   deleteImageUpload(): void {
-    (<HTMLInputElement>document.getElementById("inpimg")).value = null;
-    var canvas = <HTMLCanvasElement>document.getElementById("canvimg");
-    var context = canvas.getContext("2d");
+    (<HTMLInputElement>document.getElementById('inpimg')).value = null;
+    const canvas = <HTMLCanvasElement>document.getElementById('canvimg');
+    const context = canvas.getContext('2d');
     context.clearRect(0, 0, canvas.width, canvas.height);
-    this.imageURL = "";
-    this.imageLink = "";
-    this.image_from_json = "";
-    this.delimg_button = false;
-    this.canv_visible = false;
-    setTimeout(()=>{
-      (<HTMLButtonElement>document.getElementById("dummy_button")).click();
+    this.imageUrl = '';
+    this.imageLink = '';
+    this.imageFromJson = '';
+    this.delImgButton = false;
+    this.canvVisible = false;
+    setTimeout(() => {
+      (<HTMLButtonElement>document.getElementById('dummy_button')).click();
     }, 1000);
   }
 

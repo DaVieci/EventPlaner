@@ -1,7 +1,8 @@
 <form #f="ngForm" (ngSubmit)="filter_events(f)" class='date_picker' novalidate>
-        <input nbInput name="date_range" ngModel class="date_input" shape="semi-round" placeholder="Pick Date Range" [nbDatepicker]="dateTimePicker">
+        <input nbInput name="date_range" ngModel class="date_input" shape="semi-round" placeholder="Pick Date Range"
+                [nbDatepicker]="dateTimePicker">
         <nb-rangepicker #dateTimePicker></nb-rangepicker>
-        <nb-select multiple name="cats" [(selected)]="sel_cats" ngModel shape="semi-round" placeholder="Categories">
+        <nb-select multiple name="cats" [(selected)]="selCats" ngModel shape="semi-round" placeholder="Categories">
                 <nb-option [value]="cat?.type" *ngFor="let cat of categories">{{cat.type}}</nb-option>
         </nb-select>
         <button nbButton id="filter_button" shape="semi-round">
@@ -19,7 +20,8 @@
                                 <nb-card-header> {{ event.title }} </nb-card-header>
                                 <nb-card-body>
                                         <!-- <img src="./../../assets/event_pics/festival1.jpg" alt="1" class="event_pic"> -->
-                                        <img [src]="convertBase64ToImageURL(event.image)" alt="Event Image" class="event_pic">
+                                        <img [src]="convertBase64ToImageURL(event.image)" alt="Event Image"
+                                                class="event_pic">
                                 </nb-card-body>
                                 <nb-card-footer>
                                         From: {{event.start_date}} at {{event.start_time}} <br>

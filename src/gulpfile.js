@@ -29,26 +29,10 @@ gulp.task('build', () => {
     .pipe(exec.reporter());
     })
 
-// Lint the Backend using Eslint
-gulp.task('lintBackend', () => {
-    return gulp.src('Backend/app.js')
-    .pipe(eslint())
-    .pipe(eslint.format())
-    .pipe(eslint.failAfterError());
-    })
-
 // Lint the Frontend using Angular
 gulp.task('lintFrontend', () => {
     return gulp.src('.', {read: false})
     .pipe(exec('cd ./Frontend && ng lint'))
-    .pipe(exec.reporter());
-    })
-
-// Ping Database Server to check working connectivity
-gulp.task('pingDatabase', () => {
-    console.log("Checking connection to Database at db.example.de")
-    return gulp.src('.', {read: false})
-    .pipe(exec('ping -c 3 db.example.de'))
     .pipe(exec.reporter());
     })
 
@@ -72,7 +56,7 @@ gulp.task('runFrontend', () => {
 gulp.task('default',
     gulp.series(
         gulp.parallel('install', 'clean'),
-        //gulp.parallel('lintBackend', 'lintFrontend'),
-        //'pingDatabase',
+        gulp.parallel('lintFrontend'),
+        gulp.parallel('build'),
         gulp.parallel('runBackend', 'runFrontend')),
         () => {})
