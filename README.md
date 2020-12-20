@@ -13,10 +13,10 @@ Bela Föhrenbacher (1794796) and Thanh Viet Dang(7035821)
 ## Features
 * Sign-up as new user oder login as existing user (e-mail validation check)
 * Event overview
-..* only events  that are created by current user
-..* animations in event cards
+  * only events  that are created by current user
+  * animations in event cards
 * Create Event
-..* Title, date and time information necessary
-..* Body, image, category and status unnecessary
+  * Title, date and time information necessary
+  * Body, image, category and status unnecessary
 * Edit existing events
 * Delete events
